@@ -1,0 +1,12 @@
+build/
+ffmpeg-4.2/
+hdf5-1.10.5/
+ossim-oms/
+ossim-plugins/
+ossim-private/
+ossim-video/
+ossim/
+pkgs.txt
+szip-2.1.1/
+x264-0.155-20180923-545de2f/
+x265_3.1.2/
