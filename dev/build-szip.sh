@@ -1,6 +1,6 @@
 #/bin/sh
 
-OSSIM_DEV_HOME=/ossim
+OSSIM_DEV_HOME=/work
 OSSIM_MAKE_JOBS=8
 
 SZIP="szip-2.1.1"

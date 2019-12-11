@@ -1,6 +1,6 @@
 #!/bin/sh
 
-OSSIM_DEV_HOME=/ossim
+OSSIM_DEV_HOME=/work
 OSSIM_MAKE_JOBS=8
 
 HDF5="hdf5-1.10.5"

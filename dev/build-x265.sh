@@ -1,6 +1,6 @@
 #!/bin/sh
 
-OSSIM_DEV_HOME=/ossim
+OSSIM_DEV_HOME=/work
 OSSIM_MAKE_JOBS=8
 X265="x265_3.1.2"
 

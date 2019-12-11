@@ -1,6 +1,6 @@
 #!/bin/sh
 
-OSSIM_DEV_HOME=/ossim
+OSSIM_DEV_HOME=/work
 OSSIM_MAKE_JOBS=8
 X264="x264-0.155-20180923-545de2f"
 
