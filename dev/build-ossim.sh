@@ -53,6 +53,7 @@ export OSSIM_MAKE_JOBS=12
 $OSSIM_DEV_HOME/ossim/scripts/build.sh
 
 # install it
-cd build
+cd $OSSIM_BUILD_DIR
 make install
 cd -
+cp /usr/local/share/ossim/ossim-preferences-template $OSSIM_PREFS_FILE
