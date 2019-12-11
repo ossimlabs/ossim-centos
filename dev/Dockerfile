@@ -15,3 +15,4 @@ RUN yum --nogpgcheck -y install epel-release deltarpm \
                 libgeotiff15-devel geos38-devel gdal30-devel libjpeg-turbo-devel libjpeg-turbo-devel libcurl-devel curl cmake3 \
     && yum clean all \
     && rm -rf /var/cache/yum
+WORKDIR /work

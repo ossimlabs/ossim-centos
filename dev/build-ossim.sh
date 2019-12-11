@@ -4,8 +4,10 @@ export GEOS_DIR=/usr/geos38
 export GEOTIFF_DIR=/usr/libgeotiff15
 export GDAL_DIR=/usr/gdal30
 
+export OSSIM_DEV_HOME=/work
+
 pushd `dirname ${BASH_SOURCE[0]}` >/dev/null
-export OSSIM_DEV_HOME=`pwd -P`
+#export OSSIM_DEV_HOME=`pwd -P`
 export OSSIM_BUILD_DIR=$OSSIM_DEV_HOME/build
 popd >/dev/null
 rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
