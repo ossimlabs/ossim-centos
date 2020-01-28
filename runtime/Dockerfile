@@ -14,7 +14,7 @@ RUN yum --nogpgcheck -y install epel-release deltarpm \
     && yum --nogpgcheck -y install gnutls \
                 libass libbluray libmodplug lame openjpeg2 librsvg2 soxr speex \
                 libtheora libvorbis xz SDL2 java-1.8.0-openjdk-headless \
-                libgeotiff15 geos38 gdal30 libjpeg-turbo libjpeg-turbo libcurl \
+                libgeotiff15 geos38 gdal30 libjpeg-turbo libjpeg-turbo libcurl haveged && chkconfig haveged on \
     && yum clean all \
     && rm -rf /var/cache/yum
 
