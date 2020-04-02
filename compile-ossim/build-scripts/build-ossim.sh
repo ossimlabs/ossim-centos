@@ -67,4 +67,4 @@ for x in `find /usr/local/bin /usr/local/lib /usr/local/lib64 -type f`; do
   strip $x || true
 done
 
-tar -cvz -C /usr/local -f /output/ossim-dist.tgz .
+tar -cvz -C /usr/local -f /output/ossim-dist-minimal-centos.tgz .
