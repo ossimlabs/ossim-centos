@@ -8,4 +8,4 @@ docker run --rm -i \
 -v "${PWD}/build-scripts/build-joms.sh:/build-scripts/build-joms.sh" \
 -v "${PWD}/ossim-repos:/work" \
 -v "${PWD}/output:/output" \
-"${BUILDER_IMAGE:=ossim-builder:centos}"
+"${BUILDER_IMAGE:=ossim-builder-minimal-centos:local}"

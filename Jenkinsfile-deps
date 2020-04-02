@@ -49,8 +49,8 @@ timeout(time: 90, unit: 'MINUTES') {
         stage ("Push Builder Image") {
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}") {
                 sh """
-                    docker tag ossim-builder:centos ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-builder:centos
-                    docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-builder:centos
+                    docker tag ossim-builder-minimal-centos:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-builder-minimal-centos:\$(cat version.txt)
+                    docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-builder-minimal-centos:\$(cat version.txt)
                 """
             }
         }

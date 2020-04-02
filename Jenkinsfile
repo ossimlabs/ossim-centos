@@ -46,8 +46,10 @@ timeout(time: 60, unit: 'MINUTES') {
         {
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
                 dir("compile-ossim") {
-                    env.BUILDER_IMAGE = "${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder:centos"
-                    sh "./build.sh"
+                    sh """
+                        export BUILDER_IMAGE="${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:\$(cat version.txt)"
+                        ./build.sh
+                    """
                     archiveArtifacts "output/ossim-dist.tgz"
                 }
             }
@@ -66,8 +68,8 @@ timeout(time: 60, unit: 'MINUTES') {
         {
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}") {
                 sh """
-                    docker tag ossim-runtime:centos ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime:centos
-                    docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime:centos
+                    docker tag ossim-runtime-minimal-centos:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
+                    docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
                 """
             }
         }
