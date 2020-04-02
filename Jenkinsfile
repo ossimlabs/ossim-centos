@@ -47,7 +47,7 @@ timeout(time: 60, unit: 'MINUTES') {
             withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
                 dir("compile-ossim") {
                     sh """
-                        export BUILDER_IMAGE="${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:\$(cat version.txt)"
+                        export BUILDER_IMAGE="${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:\$(cat ../version.txt)"
                         ./build.sh
                     """
                     archiveArtifacts "output/ossim-dist.tgz"
