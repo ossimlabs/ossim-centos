@@ -14,7 +14,7 @@ RUN apk add --update tiff jpeg libpng sqlite-libs libstdc++ curl ffmpeg unzip zi
     && adduser -D -h $HOME -s /sbin/nologin -u 1001 omar \
     && chown 1001:0 -R $HOME 
 
-ADD ./ossim-dist.tgz /usr/local
+ADD ./ossim-dist-minimal-centos.tgz /usr/local
     
 EXPOSE 8080
 
