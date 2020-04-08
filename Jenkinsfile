@@ -50,7 +50,7 @@ timeout(time: 60, unit: 'MINUTES') {
                         export BUILDER_IMAGE="${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:\$(cat ../version.txt)"
                         ./build.sh
                     """
-                    archiveArtifacts "output/ossim-dist.tgz"
+                    archiveArtifacts "output/ossim-dist-minimal-centos.tgz"
                 }
             }
         }
