@@ -13,7 +13,7 @@ export DEPS_DIR="${PWD}/deps"
 
 dir="$(dirname $0)"
 
-"${dir}/checkout-kakadu.sh"
+#"${dir}/checkout-kakadu.sh"
 "${dir}/checkout-ffmpeg.sh"
 "${dir}/checkout-hdf5.sh"
 "${dir}/checkout-szip.sh"
