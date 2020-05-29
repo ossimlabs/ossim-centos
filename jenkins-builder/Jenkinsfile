@@ -57,7 +57,12 @@ podTemplate(
         {       
             container('builder'){                  
                 dir("builder-image"){
-                    sh "./checkout-scripts/checkout-deps.sh"
+                    deps/ffmpeg
+                    sh "
+                    mkdir deps
+                    cd deps
+                    mkdir ffmpeg
+                    ./checkout-scripts/checkout-deps.sh"
                 }
             }
         }
