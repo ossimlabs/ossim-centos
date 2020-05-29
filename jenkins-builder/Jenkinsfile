@@ -54,26 +54,32 @@ podTemplate(
         }
 
         stage ("Checkout Dependencies Source Code") 
-        {                          
-            dir("builder-image"){
-                sh "./checkout-scripts/checkout-deps.sh"
+        {       
+            container('builder'){                  
+                dir("builder-image"){
+                    sh "./checkout-scripts/checkout-deps.sh"
+                }
             }
         }
 
         stage ("Create Builder Image") {
-            withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
-                dir("builder-image"){
-                    sh "./build.sh"
+            container('builder'){                  
+                withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
+                    dir("builder-image"){
+                        sh "./build.sh"
+                    }
                 }
             }
         }
 
         stage ("Push Builder Image") {
-            withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}") {
-                sh """
-                    docker tag ossim-builder-minimal-centos:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-builder-minimal-centos:\$(cat version.txt)
-                    docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-builder-minimal-centos:\$(cat version.txt)
-                """
+            container('docker'){                  
+                withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}") {
+                    sh """
+                        docker tag ossim-builder-minimal-centos:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-builder-minimal-centos:\$(cat version.txt)
+                        docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-builder-minimal-centos:\$(cat version.txt)
+                    """
+                }
             }
         }
 
