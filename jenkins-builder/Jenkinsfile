@@ -11,7 +11,16 @@ properties([
     disableConcurrentBuilds()
 ])
 podTemplate(
-  containers: [
+    containers: [
+    containerTemplate(
+        name: 'git',
+        image: 'alpine/git:latest',
+        ttyEnabled: true,
+        command: 'cat',
+        envVars: [
+            envVar(key: 'HOME', value: '/root')
+        ]
+    ),
     containerTemplate(
       name: 'docker',
       image: 'docker:19.03.8',
@@ -55,14 +64,12 @@ podTemplate(
 
         stage ("Checkout Dependencies Source Code") 
         {       
-            container('builder'){                  
+            container('git'){                  
                 dir("builder-image"){
                     deps/ffmpeg
-                    sh "
-                    mkdir deps
-                    cd deps
-                    mkdir ffmpeg
-                    ./checkout-scripts/checkout-deps.sh"
+                    sh """
+                    ./checkout-scripts/checkout-deps.sh
+                    """
                 }
             }
         }
