@@ -66,8 +66,10 @@ podTemplate(
         {       
             container('git'){                  
                 dir("builder-image"){
-                    deps/ffmpeg
                     sh """
+                    ls -l
+                    mkdir -p deps/ffmpeg-4.2
+                    apk update && apk add bash
                     ./checkout-scripts/checkout-deps.sh
                     """
                 }
@@ -75,10 +77,13 @@ podTemplate(
         }
 
         stage ("Create Builder Image") {
-            container('builder'){                  
+            container('docker'){                  
                 withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
                     dir("builder-image"){
-                        sh "./build.sh"
+                        sh """
+                        apk update && apk add bash
+                        ./build.sh --network=host
+                        """
                     }
                 }
             }
