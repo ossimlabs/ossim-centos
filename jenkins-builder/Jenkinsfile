@@ -39,8 +39,14 @@ podTemplate(
     hostPathVolume(
       hostPath: '/var/run/docker.sock',
       mountPath: '/var/run/docker.sock'
-    ),
-  ]
+    )
+    /*,
+  secretVolume(
+      mountPath: '/bitbucket_secret',
+      secretName: 'ossimlabs-minion-ssh-key',
+      defaultMode: '384'
+    )
+  ]*/
 )
 {
     node(POD_LABEL){
@@ -64,6 +70,13 @@ podTemplate(
 
         stage ("Checkout Dependencies Source Code") 
         {       
+            checkout scm: [
+                $class: 'GitSCM', 
+                branches: [[name: '*/master']], 
+                userRemoteConfigs: [[
+                    credentialsId: 'ossimlabs-minion-ssh-key', 
+                    url: 'git@github.com:Maxar-Corp/ossim-private.git']]
+            ]
             container('git'){                  
                 dir("builder-image"){
                     sh """
