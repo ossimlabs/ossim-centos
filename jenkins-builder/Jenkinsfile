@@ -1,3 +1,4 @@
+
 properties([
     parameters ([
         string(name: 'DOCKER_REGISTRY_DOWNLOAD_URL', defaultValue: 'nexus-docker-private-group.ossim.io', description: 'Repository of docker images'),
@@ -40,12 +41,6 @@ podTemplate(
       hostPath: '/var/run/docker.sock',
       mountPath: '/var/run/docker.sock'
     )
-    /*,
-  secretVolume(
-      mountPath: '/bitbucket_secret',
-      secretName: 'ossimlabs-minion-ssh-key',
-      defaultMode: '384'
-    )*/
   ]
 )
 {
@@ -53,16 +48,15 @@ podTemplate(
 
         stage("Checkout")
         {
-            parallel repos.collectEntries{
-                checkout scm: [
-                    $class: 'GitSCM', 
-                    branches: [[name: '*/master']], 
-                    userRemoteConfigs: [[
-                        credentialsId: 'ossimlabs-minion-ssh-key', 
-                        url: 'git@github.com:Maxar-Corp/ossim-private.git']]
-                ]
                 checkout(scm)
-            }
+                sh "mkdir ossim-private"
+                dir("ossim-private"){
+                    git(
+                        url: 'git@github.com:Maxar-Corp/ossim-private.git',
+                        credentialsId: 'ossimlabs-minion-ssh-key',
+                        branch: "master"
+                    )
+                }
         }
 
         stage("Load Variables")
@@ -90,10 +84,12 @@ podTemplate(
                     """
                 }
             }
+            
         }
 
         stage ("Create Builder Image") {
-            container('docker'){                  
+            container('docker'){         
+                
                 withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
                     dir("builder-image"){
                         sh """
