@@ -39,12 +39,13 @@ podTemplate(
     hostPathVolume(
       hostPath: '/var/run/docker.sock',
       mountPath: '/var/run/docker.sock'
-    ),
+    )
+    /*,
   secretVolume(
-      mountPath: '/minion-ssh',
+      mountPath: '/bitbucket_secret',
       secretName: 'ossimlabs-minion-ssh-key',
       defaultMode: '384'
-    )
+    )*/
   ]
 )
 {
@@ -52,7 +53,16 @@ podTemplate(
 
         stage("Checkout")
         {
-            checkout(scm)
+            parallel repos.collectEntries{
+                checkout scm: [
+                    $class: 'GitSCM', 
+                    branches: [[name: '*/master']], 
+                    userRemoteConfigs: [[
+                        credentialsId: 'ossimlabs-minion-ssh-key', 
+                        url: 'git@github.com:Maxar-Corp/ossim-private.git']]
+                ]
+                checkout(scm)
+            }
         }
 
         stage("Load Variables")
@@ -85,13 +95,11 @@ podTemplate(
         stage ("Create Builder Image") {
             container('docker'){                  
                 withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
-                    withCredentals([string(credentialsId: 'ossimlabs-minion-ssh-key', variable: 'ossimlabs-minion-ssh-key')]){
-                        dir("builder-image"){
-                            sh """
-                            apk update && apk add bash
-                            ./build.sh --network=host
-                            """
-                        }
+                    dir("builder-image"){
+                        sh """
+                        apk update && apk add bash
+                        ./build.sh --network=host
+                        """
                     }
                 }
             }
