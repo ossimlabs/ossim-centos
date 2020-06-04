@@ -53,6 +53,13 @@ podTemplate(
 
         stage("Checkout")
         {
+            checkout scm: [
+                $class: 'GitSCM', 
+                branches: [[name: '*/master']], 
+                userRemoteConfigs: [[
+                    credentialsId: 'ossimlabs-minion-ssh-key', 
+                    url: 'git@github.com:Maxar-Corp/ossim-private.git']]
+            ]
             checkout(scm)
         }
 
@@ -70,13 +77,7 @@ podTemplate(
 
         stage ("Checkout Dependencies Source Code") 
         {       
-            checkout scm: [
-                $class: 'GitSCM', 
-                branches: [[name: '*/master']], 
-                userRemoteConfigs: [[
-                    credentialsId: 'ossimlabs-minion-ssh-key', 
-                    url: 'git@github.com:Maxar-Corp/ossim-private.git']]
-            ]
+            
             container('git'){                  
                 dir("builder-image"){
                     sh """
