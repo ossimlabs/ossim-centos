@@ -45,8 +45,8 @@ podTemplate(
       mountPath: '/bitbucket_secret',
       secretName: 'ossimlabs-minion-ssh-key',
       defaultMode: '384'
-    )
-  ]*/
+    )*/
+  ]
 )
 {
     node(POD_LABEL){
