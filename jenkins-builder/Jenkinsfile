@@ -49,8 +49,7 @@ podTemplate(
         stage("Checkout")
         {
                 checkout(scm)
-                sh "mkdir ossim-private"
-                dir("ossim-private"){
+                dir("builder-image"){
                     git(
                         url: 'git@github.com:Maxar-Corp/ossim-private.git',
                         credentialsId: 'ossimlabs-minion-ssh-key',
