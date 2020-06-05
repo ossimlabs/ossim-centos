@@ -3,7 +3,7 @@
 export CXXFLAGS=-DKDU_NO_THREADS
 
 ls
-cd ossim-private/kakadu/v7_7_1-01123C
+cd ${DEPS_DIR}/ossim-private/kakadu/
 cd make
 make -f Makefile-Linux-x86-64-gcc
 #rm $(find . -name "*.so")

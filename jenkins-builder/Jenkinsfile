@@ -49,8 +49,8 @@ podTemplate(
         stage("Checkout")
         {
                 checkout(scm)
-                sh "mkdir builder-image/ossim-private"
-                dir("builder-image/ossim-private"){
+                sh "mkdir deps/ossim-private"
+                dir("deps/ossim-private"){
                     
                     git(
                         url: 'git@github.com:Maxar-Corp/ossim-private.git',
