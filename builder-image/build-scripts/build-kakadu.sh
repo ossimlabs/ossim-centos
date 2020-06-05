@@ -3,7 +3,7 @@
 export CXXFLAGS=-DKDU_NO_THREADS
 
 cd /root
-ls
+pwd
 cd ossim-private/kakadu/
 cd make
 make -f Makefile-Linux-x86-64-gcc
