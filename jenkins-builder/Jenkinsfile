@@ -2,6 +2,7 @@
 properties([
     parameters ([
         string(name: 'DOCKER_REGISTRY_DOWNLOAD_URL', defaultValue: 'nexus-docker-private-group.ossim.io', description: 'Repository of docker images'),
+        string(name: 'KAKADU_VERSION', defaultValue: 'OrchidIsland-2.11.1', description: 'Tag of ossim-private to use for kakadu'),
         booleanParam(name: 'CLEAN_WORKSPACE', defaultValue: true, description: 'Clean the workspace at the end of the run')
     ]),
     pipelineTriggers([
@@ -49,15 +50,7 @@ podTemplate(
         stage("Checkout")
         {
                 checkout(scm)
-                sh "mkdir -p deps/ossim-private"
-                dir("deps/ossim-private"){
-                    
-                    git(
-                        url: 'git@github.com:Maxar-Corp/ossim-private.git',
-                        credentialsId: 'ossimlabs-minion-ssh-key',
-                        branch: "master"
-                    )
-                }
+                
         }
 
         stage("Load Variables")
@@ -75,13 +68,22 @@ podTemplate(
         stage ("Checkout Dependencies Source Code") 
         {       
             
-            container('git'){                  
-                dir("builder-image"){
+            container('git'){
+                dir("builder-image") {
+                    dir("deps/ossim-private"){
+                        git(
+                            url: 'git@github.com:Maxar-Corp/ossim-private.git',
+                            credentialsId: 'ossimlabs-minion-ssh-key',
+                            branch: "master"
+                        )
+                    }
+                    
                     sh """
-                    ls -l
-                    mkdir deps/ffmpeg-4.2
-                    apk update && apk add bash
-                    ./checkout-scripts/checkout-deps.sh
+                        apk update && apk add bash
+                        ./checkout-scripts/checkout-deps.sh
+                        
+                        cd deps/ossim-private
+                        git checkout "${KAKADU_VERSION}"
                     """
                 }
             }
