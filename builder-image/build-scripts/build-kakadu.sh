@@ -2,7 +2,6 @@
 
 export CXXFLAGS=-DKDU_NO_THREADS
 
-cd /root
 pwd
 cd ossim-private/kakadu/
 cd make
