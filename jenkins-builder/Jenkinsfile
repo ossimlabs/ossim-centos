@@ -49,7 +49,7 @@ podTemplate(
         stage("Checkout")
         {
                 checkout(scm)
-                sh "mkdir deps/ossim-private"
+                sh "mkdir -p deps/ossim-private"
                 dir("deps/ossim-private"){
                     
                     git(
@@ -79,7 +79,7 @@ podTemplate(
                 dir("builder-image"){
                     sh """
                     ls -l
-                    mkdir -p deps/ffmpeg-4.2
+                    mkdir deps/ffmpeg-4.2
                     apk update && apk add bash
                     ./checkout-scripts/checkout-deps.sh
                     """
