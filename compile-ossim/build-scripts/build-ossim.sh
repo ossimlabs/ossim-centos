@@ -20,7 +20,6 @@ rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 # export Qt5Widgets_DIR=$QTDIR/lib/cmake/Qt5Widgets
 # export Qt5Core_DIR=$QTDIR/lib/cmake/Qt5Core
 # export Qt5OpenGL_DIR=$QTDIR/lib/cmake/Qt5OpenGL
-export USE_OSSIM_JSONCPP=ON
 export BUILD_GEOPDF_PLUGIN=OFF 
 export BUILD_HDF5_PLUGIN=OFF
 export BUILD_OSSIM_HDF5_SUPPORT=OFF

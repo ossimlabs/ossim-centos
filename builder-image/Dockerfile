@@ -20,7 +20,7 @@ RUN yum install -y epel-release deltarpm \
                 libass-devel libbluray-devel libmodplug-devel lame-devel openjpeg2-devel librsvg2-devel soxr-devel speex-devel \
                 libtheora-devel libvorbis-devel xz-devel SDL2-devel java-1.8.0-openjdk-devel \
                 libgeotiff15-devel geos38-devel gdal30-devel libjpeg-turbo-devel libjpeg-turbo-devel libcurl-devel curl cmake3 \
-                which unzip zip ant swig3
+                which unzip zip ant swig3 json-c-devel
 
 RUN curl -s "https://get.sdkman.io" | bash \
     && bash -c "source $HOME/.sdkman/bin/sdkman-init.sh && \
