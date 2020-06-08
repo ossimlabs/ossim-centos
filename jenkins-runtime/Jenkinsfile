@@ -37,7 +37,7 @@ podTemplate(
       privileged: true
     ),
     containerTemplate(
-      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:\$(cat ../version.txt)",
+      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:1.0.0",
       name: 'builder',
       command: 'cat',
       ttyEnabled: true
@@ -96,12 +96,12 @@ timeout(time: 60, unit: 'MINUTES') {
                         sh """
                             mv ./compile-ossim/ossim-repos/* /work
                             mv ./compile-ossim/build-scripts/* /build-scripts
-                            cd /build-scripts
-                            ./build-ossim.sh
+                            cd /work
+                            /build-scripts/build-ossim.sh
                         """
                         //export BUILDER_IMAGE="${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:\$(cat ../version.txt)"
                         //./build.sh
-                        archiveArtifacts "output/ossim-dist-minimal-centos.tgz"
+                        archiveArtifacts "/output/ossim-dist-minimal-centos.tgz"
             }
         }
         stage ("Build Runtime Image")
