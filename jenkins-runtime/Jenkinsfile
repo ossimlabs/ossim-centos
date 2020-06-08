@@ -35,7 +35,7 @@ podTemplate(
       privileged: true
     ),
     containerTemplate(
-      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/omar-builder:latest",
+      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:\$(cat ../version.txt)",
       name: 'builder',
       command: 'cat',
       ttyEnabled: true
@@ -90,20 +90,21 @@ timeout(time: 60, unit: 'MINUTES') {
 
         stage ("Build Ossim")
         {
-            container('docker'){
-                sh 'apk update && apk add bash'
+            container('builder'){
+                sh ''
                 withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
-                    dir("compile-ossim") {
+                    dir("compile-ossim/build-scripts") {
                         sh """
-                            export BUILDER_IMAGE="${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:\$(cat ../version.txt)"
-                            ./build.sh
+                            apk update && apk add bash
+                            ./build-ossim.sh
                         """
+                        //export BUILDER_IMAGE="${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:\$(cat ../version.txt)"
+                        //./build.sh
                         archiveArtifacts "output/ossim-dist-minimal-centos.tgz"
                     }
                 }
             }
         }
-
         stage ("Build Runtime Image")
         {
             container('docker'){
