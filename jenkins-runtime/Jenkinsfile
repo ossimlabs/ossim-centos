@@ -7,7 +7,7 @@ properties([
         string(name: 'OSSIM_OMS_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim oms'),
         string(name: 'OSSIM_VIDEO_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim video'),
         string(name: 'OSSIM_DEEPCORE_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim deepcore'),
-        string(name: 'OSSIM_BUILDER_VERSION', defaultValue: '1.0.0', description: 'The version of the ossim builder to be used'),
+        string(name: 'OSSIM_BUILDER_VERSION', defaultValue: '1.0.1', description: 'The version of the ossim builder to be used'),
         booleanParam(name: 'CLEAN_WORKSPACE', defaultValue: true, description: 'Clean the workspace at the end of the run')
 
     ]),
@@ -37,7 +37,7 @@ podTemplate(
       privileged: true
     ),
     containerTemplate(
-      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:1.0.0",
+      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:${OSSIM_BUILDER_VERSION}",
       name: 'builder',
       command: 'cat',
       ttyEnabled: true
