@@ -72,14 +72,14 @@ timeout(time: 60, unit: 'MINUTES') {
         stage ("Checkout Source Code") 
         {  
             container('git'){  
-                dir("ossim-repos/ossim-deepcore"){
-                    git(
-                        url: 'git@github.com:Maxar-Corp/ossim-deepcore.git',
-                        credentialsId: 'ossimlabs-minion-ssh-key',
-                        branch: "master"
-                    )
-                }
                 dir("compile-ossim"){
+                    dir("ossim-repos/ossim-deepcore"){
+                        git(
+                            url: 'git@github.com:Maxar-Corp/ossim-deepcore.git',
+                            credentialsId: 'ossimlabs-minion-ssh-key',
+                            branch: "master"
+                        )
+                    }
                     sh """
                         apk update && apk add bash
                         ./checkout-ossim.sh

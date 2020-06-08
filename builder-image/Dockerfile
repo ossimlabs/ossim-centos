@@ -68,4 +68,4 @@ ENV OSSIM_DEV_HOME=/work \
     JAVA_HOME=/usr/lib/jvm/java
 
 WORKDIR /work
-CMD /build-scripts/build-ossim.sh
+CMD compile-ossim/build-scripts/build-ossim.sh
