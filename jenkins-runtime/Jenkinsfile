@@ -15,9 +15,41 @@ properties([
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '3', daysToKeepStr: '', numToKeepStr: '20')),
     disableConcurrentBuilds()
 ])
-
+podTemplate(
+    containers: [
+    containerTemplate(
+        name: 'git',
+        image: 'alpine/git:latest',
+        ttyEnabled: true,
+        command: 'cat',
+        envVars: [
+            envVar(key: 'HOME', value: '/root')
+        ]
+    ),
+    containerTemplate(
+      name: 'docker',
+      image: 'docker:19.03.8',
+      ttyEnabled: true,
+      command: 'cat',
+      privileged: true
+    ),
+    containerTemplate(
+      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/omar-builder:latest",
+      name: 'builder',
+      command: 'cat',
+      ttyEnabled: true
+    )
+  ],
+  volumes: [
+    hostPathVolume(
+      hostPath: '/var/run/docker.sock',
+      mountPath: '/var/run/docker.sock'
+    )
+  ]
+)
+{
 timeout(time: 60, unit: 'MINUTES') {
-    node("${BUILD_NODE}"){
+    node(POD_LABEL){
 
         stage("Checkout")
         {
@@ -37,41 +69,49 @@ timeout(time: 60, unit: 'MINUTES') {
         }
 
         stage ("Checkout Source Code") 
-        {                          
-            dir("compile-ossim"){
-                sh "./checkout-ossim.sh"
+        {  
+            container('git'){                        
+                dir("compile-ossim"){
+                    sh "./checkout-ossim.sh"
+                }
             }
         }  
 
         stage ("Build Ossim")
         {
-            withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
-                dir("compile-ossim") {
-                    sh """
-                        export BUILDER_IMAGE="${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:\$(cat ../version.txt)"
-                        ./build.sh
-                    """
-                    archiveArtifacts "output/ossim-dist-minimal-centos.tgz"
+            container('docker'){
+                withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
+                    dir("compile-ossim") {
+                        sh """
+                            export BUILDER_IMAGE="${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:\$(cat ../version.txt)"
+                            ./build.sh
+                        """
+                        archiveArtifacts "output/ossim-dist-minimal-centos.tgz"
+                    }
                 }
             }
         }
 
         stage ("Build Runtime Image")
         {
-            withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
-                dir("runtime") {
-                    sh "./build-docker.sh"
+            container('docker'){
+                withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
+                    dir("runtime") {
+                        sh "./build-docker.sh"
+                    }
                 }
             }
         }
 
         stage ("Publish Docker Image")
         {
-            withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}") {
-                sh """
-                    docker tag ossim-runtime-minimal-centos:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
-                    docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
-                """
+            container('docker'){
+                withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}") {
+                    sh """
+                        docker tag ossim-runtime-minimal-centos:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
+                        docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
+                    """
+                }
             }
         }
 
@@ -81,4 +121,5 @@ timeout(time: 60, unit: 'MINUTES') {
                 step([$class: 'WsCleanup'])
         }
     }
+}
 }
