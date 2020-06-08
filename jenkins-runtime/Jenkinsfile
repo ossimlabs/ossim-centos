@@ -7,7 +7,9 @@ properties([
         string(name: 'OSSIM_OMS_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim oms'),
         string(name: 'OSSIM_VIDEO_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim video'),
         string(name: 'OSSIM_DEEPCORE_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim deepcore'),
+        string(name: 'OSSIM_BUILDER_VERSION', defaultValue: '1.0.0', description: 'The version of the ossim builder to be used')
         booleanParam(name: 'CLEAN_WORKSPACE', defaultValue: true, description: 'Clean the workspace at the end of the run')
+
     ]),
     pipelineTriggers([
             [$class: "GitHubPushTrigger"]
@@ -91,18 +93,15 @@ timeout(time: 60, unit: 'MINUTES') {
         stage ("Build Ossim")
         {
             container('builder'){
-                sh ''
-                withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
-                    dir("compile-ossim/build-scripts") {
                         sh """
-                            apk update && apk add bash
+                            mv ./compile-ossim/ossim-repos/* /work
+                            mv ./compile-ossim/build-scripts/* /build-scripts
+                            cd /build-scripts
                             ./build-ossim.sh
                         """
                         //export BUILDER_IMAGE="${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:\$(cat ../version.txt)"
                         //./build.sh
                         archiveArtifacts "output/ossim-dist-minimal-centos.tgz"
-                    }
-                }
             }
         }
         stage ("Build Runtime Image")
