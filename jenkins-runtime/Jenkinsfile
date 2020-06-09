@@ -101,9 +101,9 @@ timeout(time: 60, unit: 'MINUTES') {
                             mv ./compile-ossim/build-scripts/* /build-scripts
                             cd /work
                             /build-scripts/build-ossim.sh
-                            mv /output/ossim-dist-minimal-centos.tgz ${WORKSPACE}/
+                            mv /output/ossim-dist-minimal-centos.tgz ${WORKSPACE}/compile-ossim/
                         """
-                        archiveArtifacts "ossim-dist-minimal-centos.tgz"
+                        archiveArtifacts "compile-ossim/ossim-dist-minimal-centos.tgz"
             }
         }
         stage ("Build Runtime Image")
@@ -112,7 +112,6 @@ timeout(time: 60, unit: 'MINUTES') {
                 withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
                     dir("runtime") {
                         sh """
-                            mv ${WORKSPACE}/ossim-dist-minimal-centos.tgz ./
                             ./build-docker.sh --network=host
                         """
                     }
