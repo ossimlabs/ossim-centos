@@ -103,7 +103,7 @@ timeout(time: 60, unit: 'MINUTES') {
                             /build-scripts/build-ossim.sh
                             mv /output/ ${WORKSPACE}/compile-ossim/output/
                         """
-                        archiveArtifacts "compile-ossim/ossim-dist-minimal-centos.tgz"
+                        archiveArtifacts "compile-ossim/output/ossim-dist-minimal-centos.tgz"
             }
         }
         stage ("Build Runtime Image")
