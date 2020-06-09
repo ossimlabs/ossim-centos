@@ -85,6 +85,8 @@ timeout(time: 60, unit: 'MINUTES') {
                     sh """
                         apk update && apk add bash
                         ./checkout-ossim.sh
+                        cd ossim-repos/ossim-deepcore
+                        git checkout ${OSSIM_DEEPCORE_BRANCH}
                     """
                 }
             }
@@ -94,14 +96,14 @@ timeout(time: 60, unit: 'MINUTES') {
         {
             container('builder'){
                         sh """
+                            mkdir /output
                             mv ./compile-ossim/ossim-repos/* /work
                             mv ./compile-ossim/build-scripts/* /build-scripts
                             cd /work
                             /build-scripts/build-ossim.sh
+                            mv /output/ossim-dist-minimal-centos.tgz ${WORKSPACE}/
                         """
-                        //export BUILDER_IMAGE="${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:\$(cat ../version.txt)"
-                        //./build.sh
-                        archiveArtifacts "/output/ossim-dist-minimal-centos.tgz"
+                        archiveArtifacts "ossim-dist-minimal-centos.tgz"
             }
         }
         stage ("Build Runtime Image")
