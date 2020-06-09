@@ -101,7 +101,7 @@ timeout(time: 60, unit: 'MINUTES') {
                             mv ./compile-ossim/build-scripts/* /build-scripts
                             cd /work
                             /build-scripts/build-ossim.sh
-                            mv /output/ossim-dist-minimal-centos.tgz ${WORKSPACE}/compile-ossim/
+                            mv /output/ ${WORKSPACE}/compile-ossim/output/
                         """
                         archiveArtifacts "compile-ossim/ossim-dist-minimal-centos.tgz"
             }
