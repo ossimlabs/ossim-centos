@@ -111,7 +111,10 @@ timeout(time: 60, unit: 'MINUTES') {
             container('docker'){
                 withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
                     dir("runtime") {
-                        sh "./build-docker.sh --network=host"
+                        sh """
+                            mv ${WORKSPACE}/ossim-dist-minimal-centos.tgz ./
+                            ./build-docker.sh --network=host
+                        """
                     }
                 }
             }
