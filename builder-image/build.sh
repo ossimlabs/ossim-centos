@@ -9,4 +9,4 @@ mkdir -p "${DEPS_DIR}"
 
 "${CHECKOUT_SCRIPTS_DIR}/checkout-deps.sh"
 
-docker build -t ossim-builder-minimal-centos:local .
+docker build "$@" -t ossim-builder-minimal-centos:local . 
