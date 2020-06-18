@@ -14,7 +14,7 @@ properties([
     pipelineTriggers([
             [$class: "GitHubPushTrigger"]
     ]),
-    [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: 'https://github.com/ossimlabs/ossim-centos-minimal.git'],
+    [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: 'https://github.com/ossimlabs/ossim-centos.git'],
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '3', daysToKeepStr: '', numToKeepStr: '20')),
     disableConcurrentBuilds()
 ])
@@ -37,7 +37,7 @@ podTemplate(
       privileged: true
     ),
     containerTemplate(
-      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:${OSSIM_BUILDER_VERSION}",
+      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-centos-builder:${OSSIM_BUILDER_VERSION}",
       name: 'builder',
       command: 'cat',
       ttyEnabled: true
@@ -124,8 +124,8 @@ timeout(time: 60, unit: 'MINUTES') {
             container('docker'){
                 withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}") {
                     sh """
-                        docker tag ossim-runtime-minimal-centos:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
-                        docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
+                        docker tag ossim-centos-runtime:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-centos-runtime:${OSSIM_BRANCH}
+                        docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-centos-runtime:${OSSIM_BRANCH}
                     """
                 }
             }

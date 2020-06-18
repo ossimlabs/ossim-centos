@@ -8,7 +8,7 @@ properties([
     pipelineTriggers([
             [$class: "GitHubPushTrigger"]
     ]),
-    [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: 'https://github.com/ossimlabs/ossim-centos-minimal.git'],
+    [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: 'https://github.com/ossimlabs/ossim-centos.git'],
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '3', daysToKeepStr: '', numToKeepStr: '20')),
     disableConcurrentBuilds()
 ])
@@ -102,8 +102,8 @@ podTemplate(
             container('docker'){                  
                 withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}") {
                     sh """
-                        docker tag ossim-builder-minimal-centos:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-builder-minimal-centos:\$(cat version.txt)
-                        docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-builder-minimal-centos:\$(cat version.txt)
+                        docker tag ossim-centos-builder:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-centos-builder:\$(cat version.txt)
+                        docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-centos-builder:\$(cat version.txt)
                     """
                 }
             }
