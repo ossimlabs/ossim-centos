@@ -102,34 +102,35 @@ timeout(time: 60, unit: 'MINUTES') {
                             cd /work
                             /build-scripts/build-ossim.sh
                             mv /output/ ${WORKSPACE}/compile-ossim/output/
+                            aws s3 cp ${WORKSPACE}/compile-ossim/output/ s3:o2-delivery/deepcore/centos
                         """
                         archiveArtifacts "compile-ossim/output/ossim-dist-minimal-centos.tgz"
             }
         }
 
-        stage("Deliver Artifacts")
-                {
-                        List entries = []
+//         stage("Deliver Artifacts")
+//                 {
+//                         List entries = []
+//
+//                         // Add all tars above to S3 push
+//                         if(params["SOURCE"]) {
+//                             entries += [bucket                 : "o2-delivery/deepcore/centos",
+//                                         selectedRegion         : 'us-east-1',
+//                                         showDirectlyInBrowser  : true,
+//                                         sourceFile             : "ossim-dist-minimal-centos.tgz",]
+//                         }
+//                         step([$class: 'S3BucketPublisher',
+//                               dontWaitForConcurrentBuildCompletion: false,
+//                               entries: entries,
+//                               profileName: 'jenkins',
+//                               userMetadata: []])
 
-                        // Add all tars above to S3 push
-                        if(params["SOURCE"]) {
-                            entries += [bucket                 : "o2-delivery/deepcore/centos",
-                                        selectedRegion         : 'us-east-1',
-                                        showDirectlyInBrowser  : true,
-                                        sourceFile             : "ossim-dist-minimal-centos.tgz",]
-                        }
-                        step([$class: 'S3BucketPublisher',
-                              dontWaitForConcurrentBuildCompletion: false,
-                              entries: entries,
-                              profileName: 'jenkins',
-                              userMetadata: []])
-
-                        for (entry in entries)
-                        {
-                            println("Archiving ${entry.sourceFile}")
-                            archiveArtifacts entry.sourceFile
-                        }
-                 }
+//                         for (entry in entries)
+//                         {
+//                             println("Archiving ${entry.sourceFile}")
+//                             archiveArtifacts entry.sourceFile
+//                         }
+//                  }
 
 
         stage ("Build Runtime Image")
