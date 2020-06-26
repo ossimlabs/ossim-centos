@@ -106,6 +106,31 @@ timeout(time: 60, unit: 'MINUTES') {
                         archiveArtifacts "compile-ossim/output/ossim-dist-minimal-centos.tgz"
             }
         }
+
+        stage("Deliver Artifacts")
+                {
+                        List entries = []
+
+                        // Add all tars above to S3 push
+                        entries += [bucket                 : "o2-delivery/deepcore/centos/${RELEASE_BRANCH}",
+                                    selectedRegion         : 'us-east-1',
+                                    showDirectlyInBrowser  : true,
+                                    sourceFile             : "ossim-dist-minimal-centos.tgz",]
+
+                        step([$class: 'S3BucketPublisher',
+                              dontWaitForConcurrentBuildCompletion: false,
+                              entries: entries,
+                              profileName: 'jenkins',
+                              userMetadata: []])
+
+                        for (entry in entries)
+                        {
+                            println("Archiving ${entry.sourceFile}")
+                            archiveArtifacts entry.sourceFile
+                        }
+                 }
+
+
         stage ("Build Runtime Image")
         {
             container('docker'){
