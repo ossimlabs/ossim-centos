@@ -102,7 +102,7 @@ timeout(time: 60, unit: 'MINUTES') {
                             cd /work
                             /build-scripts/build-ossim.sh
                             mv /output/ ${WORKSPACE}/compile-ossim/output/
-                            aws s3 cp ${WORKSPACE}/compile-ossim/output/ s3:o2-delivery/deepcore/centos
+                            aws s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
                         """
                         archiveArtifacts "compile-ossim/output/ossim-dist-minimal-centos.tgz"
             }
