@@ -113,7 +113,7 @@ timeout(time: 60, unit: 'MINUTES') {
 
                         // Add all tars above to S3 push
                         if(params["SOURCE"]) {
-                            entries += [bucket                 : "o2-delivery/deepcore/centos/${RELEASE_BRANCH}",
+                            entries += [bucket                 : "o2-delivery/deepcore/centos",
                                         selectedRegion         : 'us-east-1',
                                         showDirectlyInBrowser  : true,
                                         sourceFile             : "ossim-dist-minimal-centos.tgz",]
