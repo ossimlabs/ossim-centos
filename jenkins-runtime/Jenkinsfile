@@ -112,11 +112,12 @@ timeout(time: 60, unit: 'MINUTES') {
                         List entries = []
 
                         // Add all tars above to S3 push
-                        entries += [bucket                 : "o2-delivery/deepcore/centos/${RELEASE_BRANCH}",
-                                    selectedRegion         : 'us-east-1',
-                                    showDirectlyInBrowser  : true,
-                                    sourceFile             : "ossim-dist-minimal-centos.tgz",]
-
+                        if(params["SOURCE"]) {
+                            entries += [bucket                 : "o2-delivery/deepcore/centos/${RELEASE_BRANCH}",
+                                        selectedRegion         : 'us-east-1',
+                                        showDirectlyInBrowser  : true,
+                                        sourceFile             : "ossim-dist-minimal-centos.tgz",]
+                        }
                         step([$class: 'S3BucketPublisher',
                               dontWaitForConcurrentBuildCompletion: false,
                               entries: entries,
