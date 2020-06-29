@@ -22,9 +22,12 @@ RUN yum install -y epel-release deltarpm \
                 libgeotiff15-devel geos38-devel gdal30-devel libjpeg-turbo-devel libjpeg-turbo-devel libcurl-devel curl cmake3 \
                 which unzip zip ant swig3 json-c-devel
 
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-        unzip awscliv2.zip \
-        sudo ./aws/install
+# //Install aws cli
+# RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+#         unzip awscliv2.zip \
+#         sudo ./aws/install
+
+
 
 RUN curl -s "https://get.sdkman.io" | bash \
     && bash -c "source $HOME/.sdkman/bin/sdkman-init.sh && \
@@ -33,9 +36,9 @@ RUN curl -s "https://get.sdkman.io" | bash \
         yes | sdk install gradle 6.0 && \
         yes | sdk install maven 3.6.3 && \
         rm -rf $HOME/.sdkman/archives/* && \
-        rm -rf $HOME/.sdkman/tmp/*" \                    
-    # && adduser -D -s /bin/bash omar \
-    # && chown -R omar:omar /usr/local \
+        rm -rf $HOME/.sdkman/tmp/*" \
+#     && adduser -D -s /bin/bash omar \
+#     && chown -R omar:omar /usr/local \
     && rm -rf /var/cache/apk/*
 
 RUN ln -s /root/.sdkman/candidates/gradle/current/bin/gradle /usr/bin/gradle && \
