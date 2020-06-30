@@ -23,9 +23,10 @@ RUN yum install -y epel-release deltarpm \
                 which unzip zip ant swig3 json-c-devel
 
 #Install aws cli
-#RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-#        unzip awscliv2.zip \
-#        sudo ./aws/install
+RUN docker run --rm -it amazon/aws-cli:latest \
+    && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+        unzip awscliv2.zip \
+        sudo ./aws/install
 
 #docker run --rm -it amazon/aws-cli:latest
 
