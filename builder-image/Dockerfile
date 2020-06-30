@@ -23,7 +23,7 @@ RUN yum install -y epel-release deltarpm \
                 which unzip zip ant swig3 json-c-devel
 
 #Install aws cli
-RUN sudo pip install awscli
+RUN pip install awscli
 #RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
 #        unzip awscliv2.zip \
 #        sudo ./aws/install
