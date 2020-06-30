@@ -163,7 +163,7 @@ timeout(time: 60, unit: 'MINUTES') {
                     dir("runtime") {
                         sh """
                             ./build-docker.sh --network=host
-                             docker run --rm -it amazon/aws-cli:latest s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
+                             docker run --rm amazon/aws-cli:latest s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
 
                         """
 
