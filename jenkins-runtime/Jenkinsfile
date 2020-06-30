@@ -148,7 +148,8 @@ timeout(time: 60, unit: 'MINUTES') {
                     dir("runtime") {
                         sh """
                             ./build-docker.sh --network=host
-                            export AWS_DEFAULT_REGION="us-east-1"
+
+                                                        export AWS_DEFAULT_REGION="us-east-1"
                                                         export AWS_ACCESS_KEY_ID="e262167f-07f3-403c-912c-1211d7ae0a73"
                                                         export AWS_SECRET_ACCESS_KEY="-----BEGIN PUBLIC KEY-----
                                                                                       MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA8cySQxtmIU97R77OU27W
