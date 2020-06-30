@@ -22,11 +22,14 @@ RUN yum install -y epel-release deltarpm \
                 libgeotiff15-devel geos38-devel gdal30-devel libjpeg-turbo-devel libjpeg-turbo-devel libcurl-devel curl cmake3 \
                 which unzip zip ant swig3 json-c-devel
 
-# //Install aws cli
-# RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+#Install aws cli
+RUN docker run --rm -it amazon/aws-cli:latest
+
+#curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
 #         unzip awscliv2.zip \
 #         sudo ./aws/install
 
+#docker run --rm -it amazon/aws-cli:latest
 
 
 RUN curl -s "https://get.sdkman.io" | bash \
