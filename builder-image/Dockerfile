@@ -16,17 +16,17 @@ ENV OSSIM_DEV_HOME=/work \
 RUN yum install -y epel-release deltarpm \
                    https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm \
     && yum install -y \
-                wget git gcc-c++ cmake make autoconf automake libtool nasm yasm gnutls-devel \
+                wget git gcc-c++ cmake make autoconf automake libtool nasm yasm gnutls-devel python3 python-pip\
                 libass-devel libbluray-devel libmodplug-devel lame-devel openjpeg2-devel librsvg2-devel soxr-devel speex-devel \
                 libtheora-devel libvorbis-devel xz-devel SDL2-devel java-1.8.0-openjdk-devel \
                 libgeotiff15-devel geos38-devel gdal30-devel libjpeg-turbo-devel libjpeg-turbo-devel libcurl-devel curl cmake3 \
                 which unzip zip ant swig3 json-c-devel
 
 #Install aws cli
-RUN docker run --rm -it amazon/aws-cli:latest \
-    && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-        unzip awscliv2.zip \
-        sudo ./aws/install
+RUN sudo pip install awscli
+#RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+#        unzip awscliv2.zip \
+#        sudo ./aws/install
 
 #docker run --rm -it amazon/aws-cli:latest
 
