@@ -106,7 +106,22 @@ timeout(time: 60, unit: 'MINUTES') {
                         """
 //                        aws s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
                         //added to try and copy the tar file to s3 bucket
-//                         archiveArtifacts "compile-ossim/output/ossim-dist-minimal-centos.tgz"
+                         archiveArtifacts "compile-ossim/output/ossim-dist-minimal-centos.tgz"
+//
+//      export AWS_DEFAULT_REGION="us-east-1"
+//                                                         export AWS_ACCESS_KEY_ID="e262167f-07f3-403c-912c-1211d7ae0a73"
+//                                                         export AWS_SECRET_ACCESS_KEY="-----BEGIN PUBLIC KEY-----
+//                                                                                       MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA8cySQxtmIU97R77OU27W
+//                                                                                       rP5qSTT6Jz3sP/uZoL3wRsN3nnigmdoxUbCIFIZRtFtPvf9vM6vqbW9SUu3+I7w1
+//                                                                                       ekHoLkSPY2ilb91/8NkqPvpjlSoESW/NKtw6FU0AJhgyvP2sUjQU3Cnhg1wawQyl
+//                                                                                       fLrAyqSIll1Gpm8EpgLBbd2CsEwutR2W/tz6K+b3wnC05IGq93w48LsQuZWJ1ALN
+//                                                                                       JbsNhAaBIsX1r9C8o6gjATUUYOAUgjsh12qI7qWyxuW881WPfVEvOWj2cU4qGAUp
+//                                                                                       J4CAvkTD/QMuRqfbXXmW7OJe+KyOKvh1qfZ3ZktIz72YDemsE8McWSw2ufo/Nk0V
+//                                                                                       gPC4OmJKiC7157528X10w2adgO+KYtS4uuT5v/MPOOlfnL028jak5rhd4+miNJ0U
+//                                                                                       QF05BTDaiZpgEp8GCLTcH3ETE87gcC2kTRHpw//kZMB2SppJhOfx1bS0Y4+nt096
+//                                                                                       ugDN6t71J8BRejjceVIaQvpoB99X6iJYXMIT+oQ6XfeLAgMBAAE=
+//                                                                                       -----END PUBLIC KEY-----"
+//                                                         aws s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
             }
         }
 //added cli stage
@@ -148,23 +163,10 @@ timeout(time: 60, unit: 'MINUTES') {
                     dir("runtime") {
                         sh """
                             ./build-docker.sh --network=host
+                             docker run --rm -it amazon/aws-cli:latest s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
 
-                                                        export AWS_DEFAULT_REGION="us-east-1"
-                                                        export AWS_ACCESS_KEY_ID="e262167f-07f3-403c-912c-1211d7ae0a73"
-                                                        export AWS_SECRET_ACCESS_KEY="-----BEGIN PUBLIC KEY-----
-                                                                                      MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA8cySQxtmIU97R77OU27W
-                                                                                      rP5qSTT6Jz3sP/uZoL3wRsN3nnigmdoxUbCIFIZRtFtPvf9vM6vqbW9SUu3+I7w1
-                                                                                      ekHoLkSPY2ilb91/8NkqPvpjlSoESW/NKtw6FU0AJhgyvP2sUjQU3Cnhg1wawQyl
-                                                                                      fLrAyqSIll1Gpm8EpgLBbd2CsEwutR2W/tz6K+b3wnC05IGq93w48LsQuZWJ1ALN
-                                                                                      JbsNhAaBIsX1r9C8o6gjATUUYOAUgjsh12qI7qWyxuW881WPfVEvOWj2cU4qGAUp
-                                                                                      J4CAvkTD/QMuRqfbXXmW7OJe+KyOKvh1qfZ3ZktIz72YDemsE8McWSw2ufo/Nk0V
-                                                                                      gPC4OmJKiC7157528X10w2adgO+KYtS4uuT5v/MPOOlfnL028jak5rhd4+miNJ0U
-                                                                                      QF05BTDaiZpgEp8GCLTcH3ETE87gcC2kTRHpw//kZMB2SppJhOfx1bS0Y4+nt096
-                                                                                      ugDN6t71J8BRejjceVIaQvpoB99X6iJYXMIT+oQ6XfeLAgMBAAE=
-                                                                                      -----END PUBLIC KEY-----"
-                                                        aws s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
                         """
-                        archiveArtifacts "compile-ossim/output/ossim-dist-minimal-centos.tgz"
+
                     }
                 }
             }
