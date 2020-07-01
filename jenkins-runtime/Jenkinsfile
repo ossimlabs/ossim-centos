@@ -107,6 +107,22 @@ timeout(time: 60, unit: 'MINUTES') {
 //                        aws s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
                         //added to try and copy the tar file to s3 bucket
                          archiveArtifacts "compile-ossim/output/ossim-dist-minimal-centos.tgz"
+                            }
+                       }
+
+      stage ("Publish to s3 bucket")
+      {
+            container('docker'){
+            withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}") {
+            environment {
+            PATH=${WORKSPACE}/compile-ossim/output/
+            }
+            sh """
+            docker run --rm amazon/aws-cli:latest s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
+            """
+                   }
+            }
+      }
 //
 //      export AWS_DEFAULT_REGION="us-east-1"
 //                                                         export AWS_ACCESS_KEY_ID="e262167f-07f3-403c-912c-1211d7ae0a73"
@@ -122,8 +138,7 @@ timeout(time: 60, unit: 'MINUTES') {
 //                                                                                       ugDN6t71J8BRejjceVIaQvpoB99X6iJYXMIT+oQ6XfeLAgMBAAE=
 //                                                                                       -----END PUBLIC KEY-----"
 //                                                         aws s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
-            }
-        }
+
 //added cli stage
 //   stage("Package CLI") {
 //         sh """
@@ -175,14 +190,9 @@ timeout(time: 60, unit: 'MINUTES') {
             container('docker'){
                 withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}") {
 
-                       git url: 'git@github.com:Maxar-Corp/ossim-deepcore.git'
-                       withEnv(["PATH=${WORKSPACE}/compile-ossim/output/"])
-
                     sh """
                         docker tag ossim-centos-runtime:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
                         docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
-                        docker run --rm amazon/aws-cli:latest s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
-
                     """
 
                 }
