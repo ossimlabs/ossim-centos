@@ -115,10 +115,7 @@ timeout(time: 60, unit: 'MINUTES') {
             {
                 withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}")
                 {
-                    environment
-                    {
-                        PATH=${WORKSPACE}/compile-ossim/output/
-                    }
+                    withEnv(["PATH=${WORKSPACE}/compile-ossim/output/"])
                     sh """
                      docker run --rm amazon/aws-cli:latest s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
                     """
