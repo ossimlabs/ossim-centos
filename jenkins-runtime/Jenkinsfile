@@ -101,7 +101,7 @@ timeout(time: 60, unit: 'MINUTES') {
                             mv ./compile-ossim/build-scripts/* /build-scripts
                             cd /work
                             /build-scripts/build-ossim.sh
-                            mv /output/ ${WORKSPACE}/compile-ossim/output/
+                            mv /output/ ./compile-ossim/output/
 
                         """
 //                        aws s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
