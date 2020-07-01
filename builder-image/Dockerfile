@@ -9,7 +9,7 @@ ENV OSSIM_DEV_HOME=/work \
     OSSIM_PREFS_FILE=/usr/local/share/ossim/ossim-site-preferences \
     OSSIM_INSTALL_PREFIX=/usr/local \
     OSSIM_DATA=/data \
-    PATH=/usr/local/bin:/usr/bin:$PATH \
+    PATH=/usr/local/bin:/usr/bin:~/.local/bin:$PATH \
     LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64:$PATH \
     JAVA_HOME=/usr/lib/jvm/java
 
