@@ -174,11 +174,19 @@ timeout(time: 60, unit: 'MINUTES') {
         {
             container('docker'){
                 withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}") {
+                    node {
+                       git url: 'git@github.com:Maxar-Corp/ossim-deepcore.git'
+                       withEnv(["PATH=${WORKSPACE}/compile-ossim/output/"]) {
+
+                       }
+                    }
                     sh """
                         docker tag ossim-centos-runtime:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
                         docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
-                        docker run --rm amazon/aws-cli:latest s3 cp /compile-ossim/output/ s3://o2-delivery/deepcore/centos
+                        docker run --rm amazon/aws-cli:latest s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
+
                     """
+
                 }
             }
         }
