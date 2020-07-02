@@ -103,28 +103,23 @@ timeout(time: 60, unit: 'MINUTES') {
                             cd /work
                             /build-scripts/build-ossim.sh
                             mv /output/ ${WORKSPACE}/compile-ossim/output/
-                            ~/.local/bin/aws s3 cp ${WORKSPACE}/compile-ossim/output/ossim-dist-minimal-centos.tgz s3://o2-delivery/deepcore/centos/ossim-dist-minimal-centos.tgz
 
                         """
                          archiveArtifacts "compile-ossim/output/ossim-dist-minimal-centos.tgz"
             }
          }
 
-/*      stage ("Publish to s3 bucket")
+      stage ("Publish to s3 bucket")
       {
-            container('docker')
+            container('builder')
             {
-                withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}")
-                {
-                    withEnv(["PATH=${WORKSPACE}/compile-ossim/output/"]){
                         sh """
-                            docker run --rm amazon/aws-cli:latest s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
+                            aws s3 cp ${WORKSPACE}/compile-ossim/output/ s3://o2-delivery/deepcore/centos
                         """
-                    }
-                }
+
             }
       }
-*/
+
         stage ("Build Runtime Image")
         {
             container('docker'){
