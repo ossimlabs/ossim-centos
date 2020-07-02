@@ -7,7 +7,7 @@ properties([
         string(name: 'OSSIM_OMS_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim oms'),
         string(name: 'OSSIM_VIDEO_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim video'),
         string(name: 'OSSIM_DEEPCORE_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim deepcore'),
-        string(name: 'OSSIM_BUILDER_VERSION', defaultValue: '1.0.1', description: 'The version of the ossim builder to be used'),
+        string(name: 'OSSIM_BUILDER_VERSION', defaultValue: '1.0.2', description: 'The version of the ossim builder to be used'),
         booleanParam(name: 'CLEAN_WORKSPACE', defaultValue: true, description: 'Clean the workspace at the end of the run')
 
     ]),
@@ -37,7 +37,7 @@ podTemplate(
       privileged: true
     ),
     containerTemplate(
-      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:${OSSIM_BUILDER_VERSION}",
+      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-centos-builder:${OSSIM_BUILDER_VERSION}",
       name: 'builder',
       command: 'cat',
       ttyEnabled: true
@@ -94,7 +94,8 @@ timeout(time: 60, unit: 'MINUTES') {
 
         stage ("Build Ossim")
         {
-            container('builder'){
+            container('builder')
+            {
                         sh """
                             mkdir /output
                             mv ./compile-ossim/ossim-repos/* /work
@@ -102,10 +103,23 @@ timeout(time: 60, unit: 'MINUTES') {
                             cd /work
                             /build-scripts/build-ossim.sh
                             mv /output/ ${WORKSPACE}/compile-ossim/output/
+
                         """
-                        archiveArtifacts "compile-ossim/output/ossim-dist-minimal-centos.tgz"
+                         archiveArtifacts "compile-ossim/output/ossim-dist-minimal-centos.tgz"
             }
-        }
+         }
+
+      stage ("Publish to s3 bucket")
+      {
+            container('builder')
+            {
+                        sh """
+                            /root/.local/bin/aws s3 cp ${WORKSPACE}/compile-ossim/output/ossim-dist-minimal-centos.tgz s3://o2-delivery/deepcore/centos/ossim-dist-minimal-centos.${BUILD_NUMBER}.tgz
+                        """
+
+            }
+      }
+
         stage ("Build Runtime Image")
         {
             container('docker'){
@@ -114,19 +128,23 @@ timeout(time: 60, unit: 'MINUTES') {
                         sh """
                             ./build-docker.sh --network=host
                         """
+
                     }
                 }
             }
         }
 
+
         stage ("Publish Docker Image")
         {
             container('docker'){
                 withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}") {
+
                     sh """
                         docker tag ossim-centos-runtime:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
                         docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
                     """
+
                 }
             }
         }

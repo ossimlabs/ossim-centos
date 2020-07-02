@@ -9,18 +9,28 @@ ENV OSSIM_DEV_HOME=/work \
     OSSIM_PREFS_FILE=/usr/local/share/ossim/ossim-site-preferences \
     OSSIM_INSTALL_PREFIX=/usr/local \
     OSSIM_DATA=/data \
-    PATH=/usr/local/bin:/usr/bin:$PATH \
+    PATH=/usr/local/bin:/usr/bin:/root/.local/bin:$PATH \
     LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64:$PATH \
     JAVA_HOME=/usr/lib/jvm/java
 
 RUN yum install -y epel-release deltarpm \
                    https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm \
     && yum install -y \
-                wget git gcc-c++ cmake make autoconf automake libtool nasm yasm gnutls-devel \
+                wget git gcc-c++ cmake make autoconf automake libtool nasm yasm gnutls-devel python3 python-pip\
                 libass-devel libbluray-devel libmodplug-devel lame-devel openjpeg2-devel librsvg2-devel soxr-devel speex-devel \
                 libtheora-devel libvorbis-devel xz-devel SDL2-devel java-1.8.0-openjdk-devel \
                 libgeotiff15-devel geos38-devel gdal30-devel libjpeg-turbo-devel libjpeg-turbo-devel libcurl-devel curl cmake3 \
                 which unzip zip ant swig3 json-c-devel
+
+#Install aws cli
+RUN pip3 install awscli --user
+
+#RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+#        unzip awscliv2.zip \
+#        sudo ./aws/install
+
+#docker run --rm -it amazon/aws-cli:latest
+
 
 RUN curl -s "https://get.sdkman.io" | bash \
     && bash -c "source $HOME/.sdkman/bin/sdkman-init.sh && \
@@ -29,9 +39,9 @@ RUN curl -s "https://get.sdkman.io" | bash \
         yes | sdk install gradle 6.0 && \
         yes | sdk install maven 3.6.3 && \
         rm -rf $HOME/.sdkman/archives/* && \
-        rm -rf $HOME/.sdkman/tmp/*" \                    
-    # && adduser -D -s /bin/bash omar \
-    # && chown -R omar:omar /usr/local \
+        rm -rf $HOME/.sdkman/tmp/*" \
+#     && adduser -D -s /bin/bash omar \
+#     && chown -R omar:omar /usr/local \
     && rm -rf /var/cache/apk/*
 
 RUN ln -s /root/.sdkman/candidates/gradle/current/bin/gradle /usr/bin/gradle && \
@@ -63,7 +73,7 @@ ENV OSSIM_DEV_HOME=/work \
     OSSIM_PREFS_FILE=/usr/local/share/ossim/ossim-site-preferences \
     OSSIM_INSTALL_PREFIX=/usr/local \
     OSSIM_DATA=/data \
-    PATH=/usr/local/bin:/usr/bin:$PATH \
+    PATH=/usr/local/bin:/usr/bin:/root/.local/bin:$PATH \
     LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64:$PATH \
     JAVA_HOME=/usr/lib/jvm/java
 
