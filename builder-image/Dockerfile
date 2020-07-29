@@ -1,4 +1,3 @@
-#FROM alpine:latest
 FROM nexus-docker-public-group.ossim.io/centos:7 as build
 ENV OSSIM_DEV_HOME=/work \
     OSSIM_HOME=/work/ossim \
