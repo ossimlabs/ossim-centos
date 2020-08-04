@@ -64,14 +64,16 @@ podTemplate(
             
             container('git'){
                 withCredentials([usernameColonPassword(credentialsId: 'nexusCredentials', variable: 'NEXUS_CREDENTIALS')]){
-                dir("builder-image/tgz") {
-                    sh """
-                        curl -X GET -u ${NEXUS_CREDENTIALS} https://nexus.ossim.io/repository/ossim-dependencies/centos-ffmpeg.tgz -O
-                        curl -X GET -u ${NEXUS_CREDENTIALS} https://nexus.ossim.io/repository/ossim-dependencies/centos-hdf5.tgz -O
-                        curl -X GET -u ${NEXUS_CREDENTIALS} https://nexus.ossim.io/repository/ossim-dependencies/centos-szip.tgz -O
-                        curl -X GET -u ${NEXUS_CREDENTIALS} https://nexus.ossim.io/repository/ossim-dependencies/centos-kakadu.tgz -O
-                    """
+                    dir("builder-image/tgz") {
+                        sh """
+                            curl -X GET -u ${NEXUS_CREDENTIALS} https://nexus.ossim.io/repository/ossim-dependencies/centos-ffmpeg.tgz -O
+                            curl -X GET -u ${NEXUS_CREDENTIALS} https://nexus.ossim.io/repository/ossim-dependencies/centos-hdf5.tgz -O
+                            curl -X GET -u ${NEXUS_CREDENTIALS} https://nexus.ossim.io/repository/ossim-dependencies/centos-szip.tgz -O
+                            curl -X GET -u ${NEXUS_CREDENTIALS} https://nexus.ossim.io/repository/ossim-dependencies/centos-kakadu.tgz -O
+                        """
+                    }
                 }
+            }
         }
 
         stage ("Create Builder Image") {
