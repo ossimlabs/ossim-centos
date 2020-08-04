@@ -7,7 +7,7 @@ properties([
         string(name: 'OSSIM_OMS_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim oms'),
         string(name: 'OSSIM_VIDEO_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim video'),
         string(name: 'OSSIM_DEEPCORE_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim deepcore'),
-        string(name: 'OSSIM_BUILDER_VERSION', defaultValue: '1.0.2', description: 'The version of the ossim builder to be used'),
+        string(name: 'OSSIM_BUILDER_VERSION', defaultValue: '1.1', description: 'The version of the ossim builder to be used'),
         booleanParam(name: 'CLEAN_WORKSPACE', defaultValue: true, description: 'Clean the workspace at the end of the run')
 
     ]),
@@ -100,7 +100,7 @@ timeout(time: 60, unit: 'MINUTES') {
                         sh """
                             mkdir /output
                             mv ./compile-ossim/ossim-repos/* /work
-                            mv ./compile-ossim/build-scripts/* /build-scripts
+                            mv ./compile-ossim/build-scripts /
                             cd /work
                             /build-scripts/build-ossim.sh
                             mv /output/ ${WORKSPACE}/compile-ossim/output/
