@@ -3,7 +3,6 @@ set -e
 
 BASE_DIR="${PWD}"
 DEPS_DIR="${PWD}/deps"
-CHECKOUT_SCRIPTS_DIR="${PWD}/checkout-scripts"
 
 mkdir -p "${DEPS_DIR}"
 
