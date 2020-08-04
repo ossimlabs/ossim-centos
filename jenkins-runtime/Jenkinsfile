@@ -40,7 +40,8 @@ podTemplate(
       image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-centos-builder:${OSSIM_BUILDER_VERSION}",
       name: 'builder',
       command: 'cat',
-      ttyEnabled: true
+      ttyEnabled: true,
+      alwaysPullImage: true
     )
   ],
   volumes: [
