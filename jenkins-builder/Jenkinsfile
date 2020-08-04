@@ -63,25 +63,15 @@ podTemplate(
         {       
             
             container('git'){
-                dir("builder-image") {
-                    dir("deps/ossim-private"){
-                        git(
-                            url: 'git@github.com:Maxar-Corp/ossim-private.git',
-                            credentialsId: 'ossimlabs-minion-ssh-key',
-                            branch: "master"
-                        )
-                    }
-                    
+                withCredentials([usernameColonPassword(credentialsId: 'nexusCredentials', variable: 'NEXUS_CREDENTIALS')]){
+                dir("builder-image/tgz") {
                     sh """
-                        apk update && apk add bash
-                        ./checkout-scripts/checkout-deps.sh
-                        
-                        cd deps/ossim-private
-                        git checkout "${KAKADU_VERSION}"
+                        curl -X GET -u ${NEXUS_CREDENTIALS} https://nexus.ossim.io/repository/ossim-dependencies/centos-ffmpeg.tgz -O
+                        curl -X GET -u ${NEXUS_CREDENTIALS} https://nexus.ossim.io/repository/ossim-dependencies/centos-hdf5.tgz -O
+                        curl -X GET -u ${NEXUS_CREDENTIALS} https://nexus.ossim.io/repository/ossim-dependencies/centos-szip.tgz -O
+                        curl -X GET -u ${NEXUS_CREDENTIALS} https://nexus.ossim.io/repository/ossim-dependencies/centos-kakadu.tgz -O
                     """
                 }
-            }
-            
         }
 
         stage ("Create Builder Image") {
