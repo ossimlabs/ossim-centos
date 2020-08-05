@@ -121,34 +121,34 @@ timeout(time: 60, unit: 'MINUTES') {
             }
       }
 
-        stage ("Build Runtime Image")
-        {
-            container('docker'){
-                withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
-                    dir("runtime") {
-                        sh """
-                            ./build-docker.sh --network=host
-                        """
-
-                    }
-                }
-            }
-        }
-
-
-        stage ("Publish Docker Image")
-        {
-            container('docker'){
-                withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}") {
-
-                    sh """
-                        docker tag ossim-centos-runtime:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
-                        docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
-                    """
-
-                }
-            }
-        }
+//         stage ("Build Runtime Image")
+//         {
+//             container('docker'){
+//                 withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {
+//                     dir("runtime") {
+//                         sh """
+//                             ./build-docker.sh --network=host
+//                         """
+//
+//                     }
+//                 }
+//             }
+//         }
+//
+//
+//         stage ("Publish Docker Image")
+//         {
+//             container('docker'){
+//                 withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}") {
+//
+//                     sh """
+//                         docker tag ossim-centos-runtime:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
+//                         docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
+//                     """
+//
+//                 }
+//             }
+//         }
 
         stage("Clean Workspace")
         {

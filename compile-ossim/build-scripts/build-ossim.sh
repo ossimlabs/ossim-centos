@@ -70,5 +70,5 @@ done
 #cp -r /usr/geos38/* /usr/local/
 #cp -r /usr/libgeotiff15/* /usr/local
 #cp -r /usr/gdal30/* /usr/local
-tar -cvz -C /usr -f /output/ossim-dist-minimal-centos.tgz .
+tar -cvz -C /usr/local -f /output/ossim-dist-minimal-centos.tgz .
 chmod a+rw /output/ossim-dist-minimal-centos.tgz
