@@ -67,9 +67,10 @@ for x in `find /usr/local/bin /usr/local/lib /usr/local/lib64 /usr/geos38 -type 
   strip $x || true
 done
 
-cp -r /usr/geos38/* /usr/local/
-cp -r /usr/libgeotiff15/* /usr/local
-cp -r /usr/gdal30/* /usr/local
+cp -r /usr/geos38/lib64 /usr/local/
+cp -r /usr/libgeotiff15/lib /usr/local/
+cp -r /usr/gdal30/lib /usr/local/
+cp -r /usr/proj70/lib /usr/local/
 
 tar -cvz -C /usr/local -f /output/ossim-dist-minimal-centos.tgz .
 chmod a+rw /output/ossim-dist-minimal-centos.tgz
