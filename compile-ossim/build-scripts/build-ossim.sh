@@ -63,9 +63,13 @@ make install
 
 /build-scripts/build-joms.sh
 
-for x in `find /usr/local/bin /usr/local/lib /usr/local/lib64 /usr/geos38 -type f`; do
+for x in `find /usr/local/bin /usr/local/lib /usr/local/lib64 /usr/lib64 \
+  /usr/geos38/lib64 /usr/libgeotiff15/lib /usr/gdal30/lib /usr/proj70/lib -type f`; do
   strip $x || true
 done
+
+cp -r /usr/lib64 /usr/local
+mv /usr/local/lib64/mysql/* /usr/local/lib64
 
 cp -r /usr/geos38/lib64 /usr/local/
 cp -r /usr/libgeotiff15/lib /usr/local/

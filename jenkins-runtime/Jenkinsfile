@@ -115,7 +115,7 @@ timeout(time: 60, unit: 'MINUTES') {
             container('builder')
             {
                         sh """
-                            /root/.local/bin/aws s3 cp ${WORKSPACE}/compile-ossim/output/ossim-dist-minimal-centos.tgz s3://o2-delivery/deepcore/centos/ossim-dist-minimal-centos-${BRANCH_NAME}-${BUILD_NUMBER}.tgz
+                            /root/.local/bin/aws s3 cp ${WORKSPACE}/compile-ossim/output/ossim-dist-minimal-centos.tgz s3://o2-delivery/deepcore/centos/ossim-dist-minimal-centos-\$(cat version.txt).tgz
                         """
 
             }
