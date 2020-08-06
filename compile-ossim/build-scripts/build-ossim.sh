@@ -63,12 +63,19 @@ make install
 
 /build-scripts/build-joms.sh
 
-for x in `find /usr/local/bin /usr/local/lib /usr/local/lib64 /usr/geos38 -type f`; do
+for x in `find /usr/local/bin /usr/local/lib /usr/local/lib64 /usr/lib64 \
+  /usr/geos38/lib64 /usr/libgeotiff15/lib /usr/gdal30/lib /usr/proj70/lib /usr/ogdi41/lib -type f`; do
   strip $x || true
 done
 
-#cp -r /usr/geos38/* /usr/local/
-#cp -r /usr/libgeotiff15/* /usr/local
-#cp -r /usr/gdal30/* /usr/local
-tar -cvz -C /usr -f /output/ossim-dist-minimal-centos.tgz .
+cp -r /usr/lib64 /usr/local
+mv /usr/local/lib64/mysql/* /usr/local/lib64
+
+cp -r /usr/geos38/lib64 /usr/local/
+cp -r /usr/libgeotiff15/lib /usr/local/
+cp -r /usr/gdal30/lib /usr/local/
+cp -r /usr/proj70/lib /usr/local/
+cp -r /usr/ogdi41/lib /usr/local/
+
+tar -cvz -C /usr/local -f /output/ossim-dist-minimal-centos.tgz .
 chmod a+rw /output/ossim-dist-minimal-centos.tgz

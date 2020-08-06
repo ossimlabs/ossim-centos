@@ -1,4 +1,3 @@
-#FROM alpine:latest
 FROM nexus-docker-public-group.ossim.io/centos:7 as build
 ENV OSSIM_DEV_HOME=/work \
     OSSIM_HOME=/work/ossim \
@@ -49,13 +48,13 @@ RUN ln -s /root/.sdkman/candidates/gradle/current/bin/gradle /usr/bin/gradle && 
     ln -s /root/.sdkman/candidates/groovy/current/bin/groovy /usr/bin/groovy && \
     ln -s /root/.sdkman/candidates/maven/current/bin/mvn /usr/bin/mvn
 
-COPY build-scripts /build-scripts
-COPY deps /deps
-WORKDIR /deps
-
-RUN /build-scripts/build-deps.sh
-
-RUN yes | rm -r /deps/*/.git
+COPY tgz /usr/local
+RUN cd usr/local && tar -xzvf centos-ffmpeg.tgz
+RUN cd usr/local && tar -xzvf centos-hdf5.tgz 
+RUN cd usr/local && tar -xzvf centos-szip.tgz 
+RUN mkdir deps
+RUN cd usr/local && mv centos-kakadu.tgz /deps
+RUN cd /deps && tar -xzvf centos-kakadu.tgz && ls
 
 # USER omar
 # WORKDIR /home/omar
