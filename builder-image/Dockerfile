@@ -53,7 +53,7 @@ WORKDIR /usr/local
 RUN tar -xzvf centos-ffmpeg.tgz
 RUN tar -xzvf centos-hdf5.tgz 
 RUN tar -xzvf centos-szip.tgz 
-RUN mkdir deps/ossim-private
+RUN mkdir -p deps/ossim-private
 RUN mv centos-kakadu.tgz /deps/ossim-private
 RUN cd /deps/ossim-private && tar -xzvf centos-kakadu.tgz
 
