@@ -110,16 +110,19 @@ timeout(time: 60, unit: 'MINUTES') {
             }
          }
 
-      stage ("Publish to s3 bucket")
-      {
-            container('builder')
-            {
-                        sh """
-                            /root/.local/bin/aws s3 cp ${WORKSPACE}/compile-ossim/output/ossim-dist-minimal-centos.tgz s3://o2-delivery/deepcore/centos/ossim-dist-minimal-centos-\$(cat version.txt).tgz
-                        """
-
-            }
-      }
+        stage ("Publish to s3 bucket")
+        {
+            withAWS(
+                credentials: 'Jenkins IAM User',
+                region: 'us-east-1'){
+                    s3Upload(
+                        acl: 'PublicRead',
+                        bucket: 'o2-delivery',
+                        path: "deepcore/centos/ossim-dist-minimal-centos-${env.OSSIM_BUILDER_VERSION}.tgz",
+                        file: 'compile-ossim/output/ossim-dist-minimal-centos.tgz'
+                    )
+                }
+        }
 
         stage ("Build Runtime Image")
         {
