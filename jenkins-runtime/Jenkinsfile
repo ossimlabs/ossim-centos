@@ -115,11 +115,12 @@ timeout(time: 60, unit: 'MINUTES') {
             withAWS(
                 credentials: 'Jenkins IAM User',
                 region: 'us-east-1'){
-                    s3Upload
+                    s3Upload(
                         acl: 'PublicRead',
                         bucket: 'o2-delivery',
                         path: "deepcore/centos/ossim-dist-minimal-centos-${env.OSSIM_BUILDER_VERSION}.tgz",
                         file: 'compile-ossim/output/ossim-dist-minimal-centos.tgz'
+                    )
                 }
         }
 
