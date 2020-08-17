@@ -22,6 +22,7 @@ rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 #export Qt4Core_DIR=$QTDIR/lib/cmake/Qt4Core
 #export Qt4OpenGL_DIR=$QTDIR/lib/cmake/Qt4OpenGL
 #export BUILD_OSSIM_QT4=ON
+
 #
 if [ -f $OSSIM_DEV_HOME/ossim-deps-$TYPE-all.tgz ] ; then
    cd /usr/local
@@ -53,15 +54,163 @@ export QTDIR=/usr
 if [ "$CMAKE_BUILD_TYPE" == "" ] ; then
 export CMAKE_BUILD_TYPE=Release
 fi
+export BUILD_OPENCV_PLUGIN=OFF
+echo "OSSIM_DEV_HOME        = ${OSSIM_DEV_HOME}"
+echo "OSSIM_BUILD_DIR        = ${OSSIM_BUILD_DIR}"
+echo "OSSIM_INSTALL_PREFIX        = ${OSSIM_INSTALL_PREFIX}"
+$OSSIM_DEV_HOME/ossim/scripts/build.sh
+$OSSIM_DEV_HOME/ossim/scripts/install.sh
 
-#if [ -f $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so ]; then
-#   $OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so $SANDBOX_DIR/lib64
-#fi
+$OSSIM_DEV_HOME/ossim-oms/joms/build_scripts/linux/build.sh
+$OSSIM_DEV_HOME/ossim-oms/joms/build_scripts/linux/install.sh
+
+cp $OSSIM_INSTALL_PREFIX/share/ossim/ossim-preferences-template $OSSIM_INSTALL_PREFIX/share/ossim/ossim-site-preferences
+if [ $? -ne 0 ]; then echo "ERROR: Failed build for OSSIM" ; exit 1 ; fi
+pushd $OSSIM_DEV_HOME/ossim-$TYPE-all
+tar cvfz $ROOT_DIR/ossim-$TYPE-all.tgz *
+popd
+
+mkdir -p $OSSIM_DEV_HOME/ossim-$TYPE-dev;
+mkdir -p $OSSIM_DEV_HOME/ossim-$TYPE-runtime;
+cp -R $OSSIM_DEV_HOME/ossim-$TYPE-all/include $OSSIM_DEV_HOME/ossim-$TYPE-dev/
+cp -R $OSSIM_DEV_HOME/ossim-$TYPE-all/lib $OSSIM_DEV_HOME/ossim-$TYPE-dev/
+cp -R $OSSIM_DEV_HOME/ossim-$TYPE-all/lib64 $OSSIM_DEV_HOME/ossim-$TYPE-dev/
+cp -R $OSSIM_DEV_HOME/ossim-$TYPE-all/share $OSSIM_DEV_HOME/ossim-$TYPE-dev/
+cp -R $OSSIM_DEV_HOME/ossim-$TYPE-all/bin $OSSIM_DEV_HOME/ossim-$TYPE-runtime/
+cp -R $OSSIM_DEV_HOME/ossim-$TYPE-all/lib64 $OSSIM_DEV_HOME/ossim-$TYPE-runtime/
+cp -R $OSSIM_DEV_HOME/ossim-$TYPE-all/share $OSSIM_DEV_HOME/ossim-$TYPE-runtime/
+
+pushd $OSSIM_DEV_HOME/ossim-$TYPE-dev
+tar cvfz $ROOT_DIR/ossim-$TYPE-dev.tgz *
+popd
+
+pushd $OSSIM_DEV_HOME/ossim-$TYPE-runtime
+tar cvfz $ROOT_DIR/ossim-$TYPE-runtime.tgz *
+popd
+
+$OSSIM_DEV_HOME/ossim-oms/joms/build_scripts/linux/build.sh
+if [ $? -ne 0 ]; then
+   echo; echo "ERROR: Build failed for joms."
+   exit 1
+fi
+$OSSIM_DEV_HOME/ossim-oms/joms/build_scripts/linux/install.sh
+if [ $? -ne 0 ]; then
+   echo; echo "ERROR: Install failed for joms."
+   exit 1
+fi
+
+export LD_LIBRARY_PATH=$OSSIM_INSTALL_PREFIX/lib64:$OSSIM_INSTALL_PREFIX/lib:$LD_LIBRARY_PATH
+
+echo "************************** Creating Runtime Sandbox ***************************"
+export SANDBOX_NAME=ossim-sandbox-$TYPE-runtime
+export SANDBOX_DIR=$OSSIM_DEV_HOME/$SANDBOX_NAME
+mkdir -p $SANDBOX_DIR
+mkdir -p $SANDBOX_DIR/bin
+mkdir -p $SANDBOX_DIR/lib64
+mkdir -p $SANDBOX_DIR/lib
+
+
+# $OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $TEMP_EXTRACT_DIR/lib64 $SANDBOX_DIR
+cp -R $OSSIM_INSTALL_PREFIX/lib64/* $SANDBOX_DIR/lib64;
+# cp -R $OSSIM_DEPENDENCIES/lib/* $SANDBOX_DIR/lib64/;
+# cp -R $OSSIM_DEPENDENCIES/lib64/* $SANDBOX_DIR/lib64/;
+cp -R $OSSIM_INSTALL_PREFIX/share $SANDBOX_DIR/;
+cp -R $OSSIM_DEPENDENCIES/share $SANDBOX_DIR/;
+cp $OSSIM_DEPENDENCIES/bin/gdal* $SANDBOX_DIR/bin/;
+cp $OSSIM_DEPENDENCIES/bin/ff* $SANDBOX_DIR/bin/;
+cp $OSSIM_DEPENDENCIES/bin/listgeo $SANDBOX_DIR/bin/;
+cp -R $OSSIM_INSTALL_PREFIX/bin $SANDBOX_DIR/;
+rm -rf $SANDBOX_DIR/bin/ossim-*test
+rm -f $SANDBOX_DIR/lib64/*.a
+
+$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossim.so $SANDBOX_DIR/lib64
+$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/liboms.so $SANDBOX_DIR/lib64
+$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossim-wms.so $SANDBOX_DIR/lib64
+$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossim-video.so $SANDBOX_DIR/lib64
+$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/ossim/plugins $SANDBOX_DIR/lib64
+$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/bin $SANDBOX_DIR/lib64
+$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_DEPENDENCIES/bin $SANDBOX_DIR/lib64
+$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_DEPENDENCIES/lib $SANDBOX_DIR/lib64
+$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_DEPENDENCIES/lib64 $SANDBOX_DIR/lib64
+
+if [ -f $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so ]; then
+   $OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so $SANDBOX_DIR/lib64
+fi
+
+chmod +x $SANDBOX_DIR/bin/*
+chmod +x $SANDBOX_DIR/lib64/*
+
+pushd $SANDBOX_DIR
+tar cvfz $ROOT_DIR/$SANDBOX_NAME.tgz *
+popd
+
+pushd $OSSIM_DEV_HOME/ossim-oms/joms
+
+   if "$DEPLOY_JOMS" ; then
+      gradle uploadArchives
+      if [ $? -ne 0 ]; then
+      echo; echo "ERROR: Build failed for JOMS Deploy to Nexus."
+      exit 1
+      fi
+   fi
+popd
+
+echo "************************** Creating Runtime Slim Docker ***************************"
+export SLIM_NAME=ossim-docker-slim-$TYPE-runtime
+export SLIM_DIR=$OSSIM_DEV_HOME/$SLIM_NAME
+mkdir -p $SLIM_DIR
+mkdir -p $SLIM_DIR/bin
+mkdir -p $SLIM_DIR/lib64
+mkdir -p $SLIM_DIR/lib
+
+
+# $OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $TEMP_EXTRACT_DIR/lib64 $SANDBOX_DIR
+cp -R $OSSIM_INSTALL_PREFIX/lib64/* $SLIM_DIR/lib64;
+# cp -R $OSSIM_DEPENDENCIES/lib/* $SANDBOX_DIR/lib64/;
+# cp -R $OSSIM_DEPENDENCIES/lib64/* $SANDBOX_DIR/lib64/;
+cp -R $OSSIM_INSTALL_PREFIX/share $SLIM_DIR/;
+cp -R $OSSIM_DEPENDENCIES/share $SLIM_DIR/;
+cp $OSSIM_DEPENDENCIES/bin/gdal* $SLIM_DIR/bin/;
+cp $OSSIM_DEPENDENCIES/bin/ff* $SLIM_DIR/bin/;
+cp $OSSIM_DEPENDENCIES/bin/listgeo $SLIM_DIR/bin/;
+cp -R $OSSIM_INSTALL_PREFIX/bin $SLIM_DIR/;
+rm -rf $SLIM_DIR/bin/ossim-*test
+rm -f $SLIM_DIR/lib64/*.a
+
+$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossim.so $SLIM_DIR/lib64
+$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/liboms.so $SLIM_DIR/lib64
+$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossim-wms.so $SLIM_DIR/lib64
+$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossim-video.so $SLIM_DIR/lib64
+$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/ossim/plugins $SLIM_DIR/lib64
+$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/bin $SLIM_DIR/lib64
+#$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_DEPENDENCIES/bin $SLIM_DIR/lib64
+#$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_DEPENDENCIES/lib $SLIM_DIR/lib64
+#$OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_DEPENDENCIES/lib64 $SLIM_DIR/lib64
+
+if [ -f $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so ]; then
+   $OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so $SLIM_DIR/lib64
+fi
+
+chmod +x $SLIM_DIR/bin/*
+chmod +x $SLIM_DIR/lib64/*
+
+pushd $SLIM_DIR
+tar cvfz $ROOT_DIR/$SLIM_NAME.tgz *
+popd
+
+pushd $OSSIM_DEV_HOME/ossim-oms/joms
+
+   if "$DEPLOY_JOMS" ; then
+      gradle uploadArchives
+      if [ $? -ne 0 ]; then
+      echo; echo "ERROR: Build failed for JOMS Deploy to Nexus."
+      exit 1
+      fi
+   fi
+popd
+exit 0
 #
-#if [ -f $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so ]; then
-#   $OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so $SLIM_DIR/lib64
-#fi
-#
+
 export BUILD_GEOPDF_PLUGIN=OFF 
 export BUILD_HDF5_PLUGIN=OFF
 export BUILD_OSSIM_HDF5_SUPPORT=OFF
