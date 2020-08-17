@@ -242,9 +242,9 @@ if [ -d $OSSIM_DEV_HOME/ossim-private/ossim-kakadu-jpip-server-new ] ; then
    export OSSIM_BUILD_ADDITIONAL_DIRECTORIES=$OSSIM_DEV_HOME/ossim-private/ossim-kakadu-jpip-server-new
 fi
 #export CMAKE_BUILD_TYPE=RelWithDebugInfo
-export CMAKE_BUILD_TYPE=Release
-export BUILD_OPENCV_PLUGIN=OFF
-export OSSIM_MAKE_JOBS=12
+#export CMAKE_BUILD_TYPE=Release
+#export BUILD_OPENCV_PLUGIN=OFF
+#export OSSIM_MAKE_JOBS=12
 
 $OSSIM_DEV_HOME/ossim/scripts/build.sh
 
