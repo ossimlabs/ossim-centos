@@ -54,13 +54,13 @@ if [ "$CMAKE_BUILD_TYPE" == "" ] ; then
 export CMAKE_BUILD_TYPE=Release
 fi
 
-if [ -f $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so ]; then
-   $OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so $SANDBOX_DIR/lib64
-fi
-
-if [ -f $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so ]; then
-   $OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so $SLIM_DIR/lib64
-fi
+#if [ -f $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so ]; then
+#   $OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so $SANDBOX_DIR/lib64
+#fi
+#
+#if [ -f $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so ]; then
+#   $OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so $SLIM_DIR/lib64
+#fi
 #
 export BUILD_GEOPDF_PLUGIN=OFF 
 export BUILD_HDF5_PLUGIN=OFF
