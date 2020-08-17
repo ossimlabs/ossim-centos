@@ -15,6 +15,7 @@ pushd `dirname ${BASH_SOURCE[0]}` >/dev/null
 export OSSIM_BUILD_DIR=$OSSIM_DEV_HOME/build
 popd >/dev/null
 rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
+
 #
 export VERBOSE=1
 export QTDIR=/usr/local/opt/qt4
@@ -23,45 +24,7 @@ export Qt4Core_DIR=$QTDIR/lib/cmake/Qt4Core
 export Qt4OpenGL_DIR=$QTDIR/lib/cmake/Qt4OpenGL
 export BUILD_OSSIM_QT4=ON
 #
-if [ -f $OSSIM_DEV_HOME/ossim-deps-$TYPE-all.tgz ] ; then
-   cd /usr/local
-   tar xvfz $OSSIM_DEV_HOME/ossim-deps-$TYPE-all.tgz
-   export OSSIM_DEPENDENCIES=/usr/local
-else
-   export OSSIM_DEPENDENCIES=$OSSIM_DEV_HOME/ossim-dependencies
-fi
 
-if [ -f $OSSIM_DEV_HOME/qt4-${TYPE}.tgz ]; then
-   echo; echo "*** Building with QT4 ***"; echo
-   pushd $OSSIM_DEPENDENCIES;
-   tar xvf $OSSIM_DEV_HOME/qt4-${TYPE}.tgz
-   popd
-   export BUILD_OSSIM_QT4=ON
-   export QT_BINARY_DIR=$OSSIM_DEPENDENCIES/bin
-fi
-
-echo "OSSIM_DEPENDENCIES      = $OSSIM_DEPENDENCIES"
-if [ -d $OSSIM_DEPENDENCIES ] ; then
-   export LD_LIBRARY_PATH=$OSSIM_DEPENDENCIES/lib:$OSSIM_DEPENDENCIES/lib64:$LD_LIBRARY_PATH
-   export PATH=$OSSIM_DEPENDENCIES:/bin:$PATH
-fi
-mkdir -p $OSSIM_BUILD_DIR
-rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
-export QTDIR=/usr
-
-#export CMAKE_BUILD_TYPE=RelWithDebugInfo
-if [ "$CMAKE_BUILD_TYPE" == "" ] ; then
-export CMAKE_BUILD_TYPE=Release
-fi
-
-#if [ -f $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so ]; then
-#   $OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so $SANDBOX_DIR/lib64
-#fi
-#
-#if [ -f $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so ]; then
-#   $OSSIM_DEV_HOME/ossim/scripts/ocpld.sh $OSSIM_INSTALL_PREFIX/lib64/libossimQt.so $SLIM_DIR/lib64
-#fi
-#
 export BUILD_GEOPDF_PLUGIN=OFF 
 export BUILD_HDF5_PLUGIN=OFF
 export BUILD_OSSIM_HDF5_SUPPORT=OFF
