@@ -51,10 +51,10 @@ rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 export QTDIR=/usr
 
 #export CMAKE_BUILD_TYPE=RelWithDebugInfo
-if [ "$CMAKE_BUILD_TYPE" == "" ] ; then
-export CMAKE_BUILD_TYPE=Release
-fi
-export BUILD_OPENCV_PLUGIN=OFF
+#if [ "$CMAKE_BUILD_TYPE" == "" ] ; then
+#export CMAKE_BUILD_TYPE=Release
+#fi
+#export BUILD_OPENCV_PLUGIN=OFF
 echo "OSSIM_DEV_HOME        = ${OSSIM_DEV_HOME}"
 echo "OSSIM_BUILD_DIR        = ${OSSIM_BUILD_DIR}"
 echo "OSSIM_INSTALL_PREFIX        = ${OSSIM_INSTALL_PREFIX}"
@@ -242,9 +242,9 @@ if [ -d $OSSIM_DEV_HOME/ossim-private/ossim-kakadu-jpip-server-new ] ; then
    export OSSIM_BUILD_ADDITIONAL_DIRECTORIES=$OSSIM_DEV_HOME/ossim-private/ossim-kakadu-jpip-server-new
 fi
 #export CMAKE_BUILD_TYPE=RelWithDebugInfo
-#export CMAKE_BUILD_TYPE=Release
-#export BUILD_OPENCV_PLUGIN=OFF
-#export OSSIM_MAKE_JOBS=12
+export CMAKE_BUILD_TYPE=Release
+export BUILD_OPENCV_PLUGIN=OFF
+export OSSIM_MAKE_JOBS=12
 
 $OSSIM_DEV_HOME/ossim/scripts/build.sh
 
