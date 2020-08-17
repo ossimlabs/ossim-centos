@@ -17,17 +17,24 @@ popd >/dev/null
 rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 
 #
-export VERBOSE=1
-export QTDIR=/usr/local/opt/qt4
-export Qt4Widgets_DIR=$QTDIR/lib/cmake/Qt4Widgets
-export Qt4Core_DIR=$QTDIR/lib/cmake/Qt4Core
-export Qt4OpenGL_DIR=$QTDIR/lib/cmake/Qt4OpenGL
-export BUILD_OSSIM_QT4=ON
+#export VERBOSE=1
+#export QTDIR=/usr/local/opt/qt4
+#export Qt4Widgets_DIR=$QTDIR/lib/cmake/Qt4Widgets
+#export Qt4Core_DIR=$QTDIR/lib/cmake/Qt4Core
+#export Qt4OpenGL_DIR=$QTDIR/lib/cmake/Qt4OpenGL
+#export BUILD_OSSIM_QT4=ON
+
+if [ -f $OSSIM_DEV_HOME/qt4-${TYPE}.tgz ]; then
+   echo; echo "*** Building with QT4 ***"; echo
+   pushd $OSSIM_DEPENDENCIES;#
+   tar xvf $OSSIM_DEV_HOME/qt4-${TYPE}.tgz
+   popdexport BUILD_GEOPDF_PLUGIN=OFF
+   export BUILD_OSSIM_QT4=ONexport BUILD_HDF5_PLUGIN=OFF
+   export QT_BINARY_DIR=$OSSIM_DEPENDENCIES/binexport BUILD_OSSIM_HDF5_SUPPORT=OFF
+fi
+
 #
 
-export BUILD_GEOPDF_PLUGIN=OFF 
-export BUILD_HDF5_PLUGIN=OFF
-export BUILD_OSSIM_HDF5_SUPPORT=OFF
 export KAKADU_ROOT_SRC=$OSSIM_DEPS_HOME/ossim-private/kakadu/v7_7_1-01123C
 export KAKADU_LIBRARY=$KAKADU_ROOT_SRC/lib/Linux-x86-64-gcc/libkdu.a
 export KAKADU_AUX_LIBRARY=$KAKADU_ROOT_SRC/lib/Linux-x86-64-gcc/libkdu_aux.a
