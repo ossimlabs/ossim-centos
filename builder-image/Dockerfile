@@ -23,6 +23,16 @@ RUN yum install -y epel-release deltarpm \
 
 RUN pip3 install awscli --user
 
+RUN    wget https://download.qt.io/archive/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz \
+       && gunzip -a qt-everywhere-opensource-src-4.8.7.tar.gz \
+       && tar xvf qt-everywhere-opensource-src-4.8.7.tar \
+       && cd qt-everywhere-opensource-src-4.8.7 \
+       && yes | ./configure -opensource \
+       && make \
+       && su -c "make install" \
+       && make confclean \
+       && export PATH=/usr/local/Qt-4.8.7/bin:$PATH
+
 RUN curl -s "https://get.sdkman.io" | bash \
     && bash -c "source $HOME/.sdkman/bin/sdkman-init.sh && \
         yes | sdk install groovy 2.4.17 && \
