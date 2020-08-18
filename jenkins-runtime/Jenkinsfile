@@ -93,6 +93,15 @@ timeout(time: 60, unit: 'MINUTES') {
             }
         }  
 
+ stage ("Add QT4 Libraries")
+        {
+            sh """
+           wget https://download.qt.io/archive/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz
+           gunzip qt-everywhere-opensource-src-4.8.7.tar.gz
+           tar xvf qt-everywhere-opensource-src-4.8.7.tar
+        """
+        }
+
         stage ("Build Ossim")
         {
             container('builder')
