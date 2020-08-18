@@ -29,7 +29,8 @@ if [ -f $OSSIM_DEV_HOME/qt4-${TYPE}.tgz ]; then
    pushd $OSSIM_DEPENDENCIES;#
    tar xvf $OSSIM_DEV_HOME/qt4-${TYPE}.tgz
    popdexport BUILD_GEOPDF_PLUGIN=OFF
-   export BUILD_OSSIM_QT4=ONexport BUILD_HDF5_PLUGIN=OFF
+   export BUILD_OSSIM_QT4=ON
+   export BUILD_HDF5_PLUGIN=OFF
    export QT_BINARY_DIR=$OSSIM_DEPENDENCIES/binexport BUILD_OSSIM_HDF5_SUPPORT=OFF
 fi
 
