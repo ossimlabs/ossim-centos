@@ -112,7 +112,7 @@ timeout(time: 60, unit: 'MINUTES') {
                             apk update && apk add bash
                             ./checkout-ossim.sh
                             cd ossim-repos/imageLinker
-                            git checkout ${OSSIM_IMAGE_LINKER}
+                            git checkout ${OSSIM_IMAGE_LINKER_BRANCH}
                         """
 
                     }

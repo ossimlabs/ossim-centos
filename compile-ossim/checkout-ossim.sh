@@ -36,6 +36,3 @@ if [[ ! -d "${OSSIM_DEEPCORE_DIR}" ]]; then
     git clone git@github.com:Maxar-Corp/ossim-deepcore.git "${OSSIM_DEEPCORE_DIR}" --single-branch --branch "${OSSIM_DEEPCORE_BRANCH:=dev}"
 fi
 
-#if [[ ! -d "${OSSIM_IMAGE_LINKER}" ]]; then
-#    git clone git@github.com:ossimlabs/ossim-qt4.git "${OSSIM_IMAGE_LINKER}" -- single-branch --branch "${OSSIM_IMAGE_LINKER:=dev}"
-#fi
