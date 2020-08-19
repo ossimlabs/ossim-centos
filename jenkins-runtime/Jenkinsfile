@@ -7,6 +7,7 @@ properties([
         string(name: 'OSSIM_OMS_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim oms'),
         string(name: 'OSSIM_VIDEO_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim video'),
         string(name: 'OSSIM_DEEPCORE_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim deepcore'),
+//         string(name: 'OSSIM_IMAGE_LINKER', defaultValue: 'dev', description: 'The branch to use for ImageLinker'),
         string(name: 'OSSIM_BUILDER_VERSION', defaultValue: '1.2', description: 'The version of the ossim builder to be used'),
         booleanParam(name: 'CLEAN_WORKSPACE', defaultValue: true, description: 'Clean the workspace at the end of the run')
 
@@ -93,14 +94,31 @@ timeout(time: 60, unit: 'MINUTES') {
             }
         }  
 
- stage ("Add QT4 Libraries")
-        {
-            sh """
-           wget https://download.qt.io/archive/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz
-           gunzip qt-everywhere-opensource-src-4.8.7.tar.gz
-           tar xvf qt-everywhere-opensource-src-4.8.7.tar
-        """
-        }
+         stage ("Checkout ImageLinker")
+         {
+                container('git')
+                {
+                    dir("compile-ossim")
+                    {
+                        dir("ossim-repos/imageLinker")
+                        {
+                            git
+                            (
+                                url: 'git@github.com:ossimlabs/ossim-qt4.git',
+                                credentialsId: 'ossimlabs-minion-ssh-key',
+                                branch: "master"
+                            )
+                        }
+                        sh """
+                            apk update && apk add bash
+                            ./checkout-ossim.sh
+                            cd ossim-repos/imageLinker
+                            git checkout ${OSSIM_IMAGE_LINKER}
+                        """
+
+                    }
+                }
+         }
 
         stage ("Build Ossim")
         {
