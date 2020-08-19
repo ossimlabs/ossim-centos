@@ -8,12 +8,12 @@ export OSSIM_PLUGINS_DIR="${REPOS_DIR}/ossim-plugins"
 export OSSIM_OMS_DIR="${REPOS_DIR}/ossim-oms"
 export OSSIM_VIDEO_DIR="${REPOS_DIR}/ossim-video"
 export OSSIM_DEEPCORE_DIR="${REPOS_DIR}/ossim-deepcore"
-export OSSIM_IMAGE_LINKER="${REPOS_DIR}/imageLinker"
+export OSSIM_IMAGE_LINKER_DIR="${REPOS_DIR}/imageLinker"
 
 mkdir -p "${REPOS_DIR}"
 
 if [[ ! -d "${OSSIM_IMAGE_LINKER}" ]]; then
-    git clone https://github.com/ossimlabs/ossim-qt4.git "${OSSIM_IMAGE_LINKER}" -- single-branch --branch "${OSSIM_IMAGE_LINKER:=dev}"
+    git clone https://github.com/ossimlabs/ossim-qt4.git "${OSSIM_IMAGE_LINKER_DIR}" -- single-branch --branch "${OSSIM_IMAGE_LINKER_BRANCH:=dev}"
 fi
 
 if [[ ! -d "${OSSIM_DIR}" ]]; then
