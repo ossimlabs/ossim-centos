@@ -22,7 +22,7 @@ rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 #export Qt4Widgets_DIR=$QTDIR/lib/cmake/Qt4Widgets
 #export Qt4Core_DIR=$QTDIR/lib/cmake/Qt4Core
 #export Qt4OpenGL_DIR=$QTDIR/lib/cmake/Qt4OpenGL
-#export BUILD_OSSIM_QT4=ON
+export BUILD_OSSIM_QT4=ON
 #
 
 export BUILD_GEOPDF_PLUGIN=OFF
