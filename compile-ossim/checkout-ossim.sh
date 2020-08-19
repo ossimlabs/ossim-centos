@@ -13,7 +13,7 @@ export OSSIM_IMAGE_LINKER_DIR="${REPOS_DIR}/imageLinker"
 mkdir -p "${REPOS_DIR}"
 
 if [[ ! -d "${OSSIM_IMAGE_LINKER_DIR}" ]]; then
-    git clone https://github.com/ossimlabs/ossim-qt4.git "${OSSIM_IMAGE_LINKER_DIR}" -- single-branch --branch "${OSSIM_IMAGE_LINKER_BRANCH:=dev}"
+    git clone -b "${OSSIM_IMAGE_LINKER_BRANCH:=dev}" https://github.com/ossimlabs/ossim-qt4.git
 fi
 
 if [[ ! -d "${OSSIM_DIR}" ]]; then
