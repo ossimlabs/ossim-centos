@@ -94,30 +94,6 @@ timeout(time: 60, unit: 'MINUTES') {
             }
         }  
 
-         stage ("Checkout ImageLinker")
-         {
-                container('git')
-                {
-                    dir("compile-ossim")
-                    {
-                        dir("ossim-repos/imageLinker")
-                        {
-                            git(
-                                url: 'git@github.com:ossimlabs/ossim-qt4.git',
-                                credentialsId: 'ossimlabs-minion-ssh-key',
-                                branch: "master"
-                            )
-                        }
-                        sh """
-                            apk update && apk add bash
-                            ./checkout-ossim.sh
-                            cd ossim-repos/imageLinker
-                            git checkout ${OSSIM_IMAGE_LINKER_BRANCH}
-                        """
-
-                    }
-                }
-         }
 
         stage ("Build Ossim")
         {
