@@ -17,15 +17,17 @@ popd >/dev/null
 rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 
 #
-#export VERBOSE=1
+export VERBOSE=1
 export QTDIR=/usr/local/Trolltech/Qt-4.8.7/bin
 export Qt4Core_DIR=$QTDIR/../include/QtCore
 export Qt4OpenGL_DIR=$QTDIR/../include/QtOpenGL
 
 ### the following three are missing
-export QT_MOC_EXECUTABLE=$QTDIR/bin/moc.exe
-#export QT_RCC_EXECUTABLE=$QTDIR/bin
+#export QT_MOC_EXECUTABLE=$QTDIR/bin/moc.exe
+#export QT_RCC_EXECUTABLE=/usr/local/Trolltech/Qt-4.8.7/bin
 #export QT_MOC_EXECUTABLE=$QTDIR/bin
+
+cmake -DCMAKE_PREFIX_PATH=/usr/local/Trolltech/Qt-4.8.7/bin
 
 ### someone somewhere told me to try this
 #export CMAKE_PREFIX_PATH=$QTDIR/bin
@@ -77,7 +79,6 @@ export OSSIM_MAKE_JOBS=12
 
 $OSSIM_DEV_HOME/ossim/scripts/build.sh
 
-#export QT_BINARY_DIR=/usr/local/Trolltech/Qt-4.8.7
 
 # Install it
 cd build
