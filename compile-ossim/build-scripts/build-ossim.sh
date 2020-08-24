@@ -23,7 +23,7 @@ rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 #export Qt4Core_DIR=$QTDIR/lib/cmake/Qt4Core
 #export Qt4OpenGL_DIR=$QTDIR/lib/cmake/Qt4OpenGL
 export BUILD_OSSIM_QT4=ON
-export QT_BINARY_DIR=/usr/local/Trolltech/Qt-4.8.7
+
 #
 
 export BUILD_GEOPDF_PLUGIN=OFF
@@ -63,7 +63,7 @@ export OSSIM_MAKE_JOBS=12
 
 $OSSIM_DEV_HOME/ossim/scripts/build.sh
 
-
+export QT_BINARY_DIR=/usr/local/Trolltech/Qt-4.8.7
 
 # Install it
 cd build
