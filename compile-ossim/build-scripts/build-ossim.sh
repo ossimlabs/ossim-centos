@@ -18,7 +18,7 @@ rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 
 #
 #export VERBOSE=1
-export QTDIR=/usr/local/Trolltech/Qt-4.8.7/bin
+export QTDIR=/Trolltech/Qt-4.8.7/bin
 export Qt4Core_DIR=$QTDIR/../include/QtCore
 export Qt4OpenGL_DIR=$QTDIR/../include/QtOpenGL
 
@@ -33,8 +33,8 @@ export Qt4OpenGL_DIR=$QTDIR/../include/QtOpenGL
 ### these two were here before, but idk how to transalte to current
 #export Qt4Widgets_DIR=$QTDIR/include/QtCore
 
-### this never helped
-#export QT_BINARY_DIR=/usr/local/Trolltech/Qt-4.8.7
+### this never helped ... ***used to have /usr/local/ before Trolltech***
+export QT_BINARY_DIR=Trolltech/Qt-4.8.7/bin
 
 export BUILD_OSSIM_QT4=ON
 
