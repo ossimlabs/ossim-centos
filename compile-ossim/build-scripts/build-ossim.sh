@@ -18,12 +18,13 @@ rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 
 #
 #export VERBOSE=1
-#export QTDIR=/usr/local/opt/qt4
-#export Qt4Widgets_DIR=$QTDIR/lib/cmake/Qt4Widgets
-#export Qt4Core_DIR=$QTDIR/lib/cmake/Qt4Core
-#export Qt4OpenGL_DIR=$QTDIR/lib/cmake/Qt4OpenGL
-export QT_BINARY_DIR=/usr/local/Trolltech/Qt-4.8.7
 export QTDIR=/usr/local/Trolltech/Qt-4.8.7
+export Qt4Core_DIR=$QTDIR/include/QtCore
+export Qt4OpenGL_DIR=$QTDIR/include/QtOpenGL
+
+#export Qt4Widgets_DIR=$QTDIR/include/QtCore
+#export QT_BINARY_DIR=/usr/local/Trolltechch/Qt-4.8.7
+
 export BUILD_OSSIM_QT4=ON
 
 #
