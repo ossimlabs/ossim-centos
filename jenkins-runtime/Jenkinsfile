@@ -99,12 +99,11 @@ timeout(time: 60, unit: 'MINUTES') {
         {
             container('builder')
             {
-//             there used to be a "cd /work" in the blank spot below
                         sh """
                             mkdir /output
                             mv ./compile-ossim/ossim-repos/* /work
                             mv ./compile-ossim/build-scripts /
-
+                            cd /work
                             /build-scripts/build-ossim.sh
                             mv /output/ ${WORKSPACE}/compile-ossim/output/
 
