@@ -63,10 +63,11 @@ export OSSIM_MAKE_JOBS=12
 
 $OSSIM_DEV_HOME/ossim/scripts/build.sh
 
-export QT_BINARY_DIR=/usr/local/Trolltech/Qt-4.8.7
+#export QT_BINARY_DIR=/usr/local/Trolltech/Qt-4.8.7
 
 # Install it
 cd build
+ln -s "/usr/bin" "/usr/local/Trolltech/Qt-4.8.7"
 
 # use absolute paths and put the soft link here
 
