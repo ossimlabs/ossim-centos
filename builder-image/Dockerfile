@@ -31,6 +31,7 @@ RUN    wget https://download.qt.io/archive/qt/4.8/4.8.7/qt-everywhere-opensource
        && make \
        && su -c "make install" \
        && make confclean \
+       && export QTDIR=/usr/lib/qt4 \
        && export PATH=/usr/local/Trolltech/Qt-4.8.7/bin:$PATH
 
 RUN curl -s "https://get.sdkman.io" | bash \
