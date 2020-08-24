@@ -22,6 +22,8 @@ rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 #export Qt4Widgets_DIR=$QTDIR/lib/cmake/Qt4Widgets
 #export Qt4Core_DIR=$QTDIR/lib/cmake/Qt4Core
 #export Qt4OpenGL_DIR=$QTDIR/lib/cmake/Qt4OpenGL
+export QT_BINARY_DIR=/usr/local/Trolltech/Qt-4.8.7
+export QTDIR=/usr/local/Trolltech/Qt-4.8.7
 export BUILD_OSSIM_QT4=ON
 
 #
@@ -67,7 +69,8 @@ $OSSIM_DEV_HOME/ossim/scripts/build.sh
 
 # Install it
 cd build
-ln -s "/usr/bin" "/usr/local/Trolltech/Qt-4.8.7"
+
+#ln -s "/usr/bin" "/usr/local/Trolltech/Qt-4.8.7"
 
 # use absolute paths and put the soft link here
 
