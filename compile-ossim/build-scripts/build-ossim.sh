@@ -17,7 +17,7 @@ popd >/dev/null
 rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 
 #
-export VERBOSE=1
+#export VERBOSE=1
 export QTDIR=/usr/local/Trolltech/Qt-4.8.7/bin
 export Qt4Core_DIR=$QTDIR/../include/QtCore
 export Qt4OpenGL_DIR=$QTDIR/../include/QtOpenGL
