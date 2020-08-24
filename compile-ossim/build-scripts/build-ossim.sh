@@ -27,7 +27,7 @@ export Qt4OpenGL_DIR=$QTDIR/../include/QtOpenGL
 #export QT_RCC_EXECUTABLE=/usr/local/Trolltech/Qt-4.8.7/bin
 #export QT_MOC_EXECUTABLE=$QTDIR/bin
 
-cmake -DCMAKE_PREFIX_PATH=/usr/local/Trolltech/Qt-4.8.7/bin
+export -DCMAKE_PREFIX_PATH=/usr/local/Trolltech/Qt-4.8.7/bin
 
 ### someone somewhere told me to try this
 #export CMAKE_PREFIX_PATH=$QTDIR/bin
