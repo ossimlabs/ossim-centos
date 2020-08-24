@@ -21,9 +21,9 @@ rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 export QTDIR=/usr/local/Trolltech/Qt-4.8.7
 export Qt4Core_DIR=$QTDIR/include/QtCore
 export Qt4OpenGL_DIR=$QTDIR/include/QtOpenGL
-export QT_MOC_EXECUTABLE=$QTDIR
-export QT_RCC_EXECUTABLE=$QTDIR
-export QT_MOC_EXECUTABLE=$QTDIR
+export QT_MOC_EXECUTABLE=$QTDIR/bin
+export QT_RCC_EXECUTABLE=$QTDIR/bin
+export QT_MOC_EXECUTABLE=$QTDIR/bin
 #export Qt4Widgets_DIR=$QTDIR/include/QtCore
 #export QT_BINARY_DIR=/usr/local/Trolltech/Qt-4.8.7
 
