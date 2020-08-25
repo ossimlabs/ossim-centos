@@ -21,7 +21,8 @@ rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 export QTDIR=/usr/local/Trolltech/Qt-4.8.7/bin
 export Qt4Core_DIR=$QTDIR/../include/QtCore
 export Qt4OpenGL_DIR=$QTDIR/../include/QtOpenGL
-
+export OPENTHREADS_LIBRARY=ON
+export OPENTHREADS_INCLUDE=ON
 ### the following three are missing
 #export QT_MOC_EXECUTABLE=$QTDIR/bin/moc.exe
 #export QT_RCC_EXECUTABLE=/usr/local/Trolltech/Qt-4.8.7/bin
