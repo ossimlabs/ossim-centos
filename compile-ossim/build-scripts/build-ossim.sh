@@ -35,6 +35,8 @@ export CMAKE_PREFIX_PATH=/usr/local/Trolltech/Qt-4.8.7/bin
 ### these two were here before, but idk how to transalte to current
 #export Qt4Widgets_DIR=$QTDIR/include/QtCore
 
+ln -s "/usr/local/Trolltech/Qt-4.8.7/bin" "/usr/bin"
+
 ### this never helped
 export QT_BINARY_DIR=/usr/local/Trolltech/Qt-4.8.7/bin
 
@@ -83,7 +85,7 @@ $OSSIM_DEV_HOME/ossim/scripts/build.sh
 # Install it
 cd build
 
-#ln -s "/usr/bin" "/usr/local/Trolltech/Qt-4.8.7"
+#ln -s "/usr/bin" "/usr/local/Trolltech/Qt-4.8.7/bin"
 
 # use absolute paths and put the soft link here
 
