@@ -39,7 +39,7 @@ export CMAKE_PREFIX_PATH=/usr/local/Trolltech/Qt-4.8.7/bin
 
 ### this never helped
 export NEW_QT_BINARY_DIR=/usr/local/Trolltech/Qt-4.8.7/bin
-ln -s NEW_QT_BINARY_DIR NEW_QT_BINARY_DIR
+ln -s NEW_QT_BINARY_DIR QT_BINARY_DIR
 export BUILD_OSSIM_QT4=ON
 
 #
