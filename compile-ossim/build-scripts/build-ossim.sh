@@ -87,6 +87,7 @@ cd build
 
 # use absolute paths and put the soft link here
 
+make clean
 make install
 
 /build-scripts/build-joms.sh
