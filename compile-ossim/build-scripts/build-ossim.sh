@@ -35,10 +35,8 @@ export CMAKE_PREFIX_PATH=/usr/local/Trolltech/Qt-4.8.7/bin
 ### these two were here before, but idk how to transalte to current
 #export Qt4Widgets_DIR=$QTDIR/include/QtCore
 
-
-
 ### this never helped
-export NEW_QT_BINARY_DIR=/usr/local/Trolltech/Qt-4.8.7/bin
+export NEW_QT_BINARY_DIR=/usr/local/bin/Trolltech/Qt-4.8.7/bin
 ln -s NEW_QT_BINARY_DIR QT_BINARY_DIR
 export BUILD_OSSIM_QT4=ON
 
