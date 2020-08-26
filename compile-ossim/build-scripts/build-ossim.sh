@@ -16,29 +16,19 @@ export OSSIM_BUILD_DIR=$OSSIM_DEV_HOME/build
 popd >/dev/null
 rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 
-#
+
+
+cp -r /usr/local/Trolltech/Qt-4.8.7/bin/* /usr/bin/
 #export VERBOSE=1
-export QTDIR=/usr/local/Trolltech/Qt-4.8.7/bin
+#export QTDIR=/usr/local/Trolltech/Qt-4.8.7/bin
 export Qt4Core_DIR=$QTDIR/../include/QtCore
 export Qt4OpenGL_DIR=$QTDIR/../include/QtOpenGL
-export OPENTHREADS_LIBRARY=ON
-export OPENTHREADS_INCLUDE=ON
-### the following three are missing
-#export QT_MOC_EXECUTABLE=$QTDIR/bin/moc.exe
-#export QT_RCC_EXECUTABLE=/usr/local/Trolltech/Qt-4.8.7/bin
-#export QT_MOC_EXECUTABLE=$QTDIR/bin
 
-export CMAKE_PREFIX_PATH=/usr/local/Trolltech/Qt-4.8.7/bin
-
-### someone somewhere told me to try this
-#export CMAKE_PREFIX_PATH=$QTDIR/bin
 
 ### these two were here before, but idk how to transalte to current
 #export Qt4Widgets_DIR=$QTDIR/include/QtCore
 
-### this never helped
-export NEW_QT_BINARY_DIR=/usr/local/bin/Trolltech/Qt-4.8.7/bin
-ln -s NEW_QT_BINARY_DIR QT_BINARY_DIR
+
 export BUILD_OSSIM_QT4=ON
 
 #
@@ -88,7 +78,9 @@ cd build
 
 # use absolute paths and put the soft link here
 
-make clean
+#make clean
+
+
 make install
 
 /build-scripts/build-joms.sh

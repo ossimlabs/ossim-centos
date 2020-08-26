@@ -13,7 +13,7 @@ export OSSIM_QT4_DIR="${REPOS_DIR}/ossim-qt4"
 mkdir -p "${REPOS_DIR}"
 
 if [[ ! -d "${OSSIM_QT4_DIR}" ]]; then
-    git clone https://github.com/ossimlabs/ossim-qt4.git "${OSSIM_QT4_DIR}" --single-branch --branch "imageLinker"
+    git clone https://github.com/ossimlabs/ossim-qt4.git "${OSSIM_QT4_DIR}" --single-branch --branch "${OSSIM_QT4_BRANCH:=dev}"
 fi
 
 if [[ ! -d "${OSSIM_DIR}" ]]; then
