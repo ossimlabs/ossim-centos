@@ -19,19 +19,11 @@ rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 
 
 cp -r /usr/local/Trolltech/Qt-4.8.7/bin/* /usr/bin/
-#export VERBOSE=1
-#export QTDIR=/usr/local/Trolltech/Qt-4.8.7/bin
 export Qt4Core_DIR=$QTDIR/../include/QtCore
 export Qt4OpenGL_DIR=$QTDIR/../include/QtOpenGL
-
-
-### these two were here before, but idk how to transalte to current
-#export Qt4Widgets_DIR=$QTDIR/include/QtCore
-
-
 export BUILD_OSSIM_QT4=ON
 
-#
+
 
 export BUILD_GEOPDF_PLUGIN=OFF
 export BUILD_HDF5_PLUGIN=OFF
@@ -73,14 +65,6 @@ $OSSIM_DEV_HOME/ossim/scripts/build.sh
 
 # Install it
 cd build
-
-#ln -s "/usr/bin" "/usr/local/Trolltech/Qt-4.8.7/bin"
-
-# use absolute paths and put the soft link here
-
-#make clean
-
-
 make install
 
 /build-scripts/build-joms.sh
