@@ -9,7 +9,7 @@ ENV OSSIM_DEV_HOME=/work \
     OSSIM_INSTALL_PREFIX=/usr/local \
     OSSIM_DATA=/data \
     PATH=/usr/local/bin:/usr/bin:/root/.local/bin:$PATH \
-    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:/usr/local/lib64:/usr/local/Trolltech/Qt-4.8.7/lib \
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/Trolltech/Qt-4.8.7/lib \
     JAVA_HOME=/usr/lib/jvm/java
 
 RUN yum install -y epel-release deltarpm \
@@ -19,20 +19,9 @@ RUN yum install -y epel-release deltarpm \
                 libass-devel libbluray-devel libmodplug-devel lame-devel openjpeg2-devel librsvg2-devel soxr-devel speex-devel \
                 libtheora-devel libvorbis-devel xz-devel SDL2-devel java-1.8.0-openjdk-devel \
                 libgeotiff15-devel geos38-devel gdal30-devel libjpeg-turbo-devel libjpeg-turbo-devel libcurl-devel curl cmake3 \
-                which unzip zip ant swig3 json-c-devel
+                which unzip zip ant swig3 json-c-devel qt-devel.i686
 
 RUN pip3 install awscli --user
-
-RUN    wget https://download.qt.io/archive/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz \
-       && gunzip -a qt-everywhere-opensource-src-4.8.7.tar.gz \
-       && tar xvf qt-everywhere-opensource-src-4.8.7.tar \
-       && cd qt-everywhere-opensource-src-4.8.7 \
-       && yes | ./configure -opensource \
-       && make \
-       && su -c "make install" \
-       && make confclean \
-       && export QTDIR=/usr/lib/qt4 \
-       && export PATH=/usr/local/Trolltech/Qt-4.8.7/bin:$PATH
 
 RUN curl -s "https://get.sdkman.io" | bash \
     && bash -c "source $HOME/.sdkman/bin/sdkman-init.sh && \
