@@ -65,9 +65,8 @@ make install
 
 /build-scripts/build-joms.sh
 
-# removed "/usr/proj70/lib" from below
 for x in `find /usr/local/bin /usr/local/lib /usr/local/lib64 /usr/lib64 \
-  /usr/geos38/lib64 /usr/libgeotiff15/lib /usr/gdal30/lib /usr/ogdi41/lib -type f`; do
+  /usr/geos38/lib64 /usr/libgeotiff15/lib /usr/gdal30/lib /usr/ogdi41/lib /usr/proj71/lib -type f`; do
   strip $x || true
 done
 
@@ -77,7 +76,7 @@ mv /usr/local/lib64/mysql/* /usr/local/lib64
 cp -r /usr/geos38/lib64 /usr/local/
 cp -r /usr/libgeotiff15/lib /usr/local/
 cp -r /usr/gdal30/lib /usr/local/
-#cp -r /usr/proj70/lib /usr/local/
+cp -r /usr/proj71/lib /usr/local/
 cp -r /usr/ogdi41/lib /usr/local/
 
 tar -cvz -C /usr/local -f /output/ossim-dist-minimal-centos.tgz .
