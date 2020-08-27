@@ -16,14 +16,9 @@ export OSSIM_BUILD_DIR=$OSSIM_DEV_HOME/build
 popd >/dev/null
 rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
 
-
-
-cp -r /usr/local/Trolltech/Qt-4.8.7/bin/* /usr/bin/
 export Qt4Core_DIR=$QTDIR/../include/QtCore
 export Qt4OpenGL_DIR=$QTDIR/../include/QtOpenGL
 export BUILD_OSSIM_QT4=ON
-
-
 
 export BUILD_GEOPDF_PLUGIN=OFF
 export BUILD_HDF5_PLUGIN=OFF
