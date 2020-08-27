@@ -9,7 +9,6 @@ ENV OSSIM_DEV_HOME=/work \
     OSSIM_INSTALL_PREFIX=/usr/local \
     OSSIM_DATA=/data \
     PATH=/usr/local/bin:/usr/bin:/root/.local/bin:$PATH \
-    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/Trolltech/Qt-4.8.7/lib \
     JAVA_HOME=/usr/lib/jvm/java
 
 RUN yum install -y epel-release deltarpm \
