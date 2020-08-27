@@ -65,6 +65,7 @@ $OSSIM_DEV_HOME/ossim/scripts/build.sh
 
 # Install it
 cd build
+make clean
 make install
 
 /build-scripts/build-joms.sh
