@@ -15,12 +15,12 @@ pushd `dirname ${BASH_SOURCE[0]}` >/dev/null
 export OSSIM_BUILD_DIR=$OSSIM_DEV_HOME/build
 popd >/dev/null
 rm -f $OSSIM_BUILD_DIR/CMakeCache.txt
-# export VERBOSE=1
-# export QTDIR=/usr/local/opt/qt5
-# export Qt5Widgets_DIR=$QTDIR/lib/cmake/Qt5Widgets
-# export Qt5Core_DIR=$QTDIR/lib/cmake/Qt5Core
-# export Qt5OpenGL_DIR=$QTDIR/lib/cmake/Qt5OpenGL
-export BUILD_GEOPDF_PLUGIN=OFF 
+
+export Qt4Core_DIR=$QTDIR/../include/QtCore
+export Qt4OpenGL_DIR=$QTDIR/../include/QtOpenGL
+export BUILD_OSSIM_QT4=ON
+
+export BUILD_GEOPDF_PLUGIN=OFF
 export BUILD_HDF5_PLUGIN=OFF
 export BUILD_OSSIM_HDF5_SUPPORT=OFF
 export KAKADU_ROOT_SRC=$OSSIM_DEPS_HOME/ossim-private/kakadu/v7_7_1-01123C
@@ -57,14 +57,16 @@ export OSSIM_MAKE_JOBS=12
 
 $OSSIM_DEV_HOME/ossim/scripts/build.sh
 
+
 # Install it
 cd build
+make clean
 make install
 
 /build-scripts/build-joms.sh
 
 for x in `find /usr/local/bin /usr/local/lib /usr/local/lib64 /usr/lib64 \
-  /usr/geos38/lib64 /usr/libgeotiff15/lib /usr/gdal30/lib /usr/proj70/lib /usr/ogdi41/lib -type f`; do
+  /usr/geos38/lib64 /usr/libgeotiff15/lib /usr/gdal30/lib /usr/ogdi41/lib /usr/proj71/lib -type f`; do
   strip $x || true
 done
 
@@ -74,7 +76,7 @@ mv /usr/local/lib64/mysql/* /usr/local/lib64
 cp -r /usr/geos38/lib64 /usr/local/
 cp -r /usr/libgeotiff15/lib /usr/local/
 cp -r /usr/gdal30/lib /usr/local/
-cp -r /usr/proj70/lib /usr/local/
+cp -r /usr/proj71/lib /usr/local/
 cp -r /usr/ogdi41/lib /usr/local/
 
 tar -cvz -C /usr/local -f /output/ossim-dist-minimal-centos.tgz .
