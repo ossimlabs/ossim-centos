@@ -1,4 +1,3 @@
-
 properties([
     parameters ([
         string(name: 'DOCKER_REGISTRY_DOWNLOAD_URL', defaultValue: 'nexus-docker-private-group.ossim.io', description: 'Repository of docker images'),
@@ -43,8 +42,28 @@ podTemplate(
 
         stage("Checkout")
         {
-                checkout(scm)
+            scmVars = checkout(scm)
+
+
+        GIT_BRANCH_NAME = scmVars.GIT_BRANCH
+        BRANCH_NAME = """${sh(returnStdout: true, script: "echo ${GIT_BRANCH_NAME} | awk -F'/' '{print \$2}'").trim()}"""
+        
+    
+        preVERSION = readFile "version.txt"
+        VERSION = preVERSION.substring(0, preVERSION.indexOf('\n'))
+
+        GIT_TAG_NAME = "omar-wms" + "-" + VERSION
+        ARTIFACT_NAME = "ArtifactName"
+
+        script {
+          if (BRANCH_NAME != 'master') {
+            buildName "${VERSION} - ${BRANCH_NAME}-SNAPSHOT"
+          } else {
+            buildName "${VERSION} - ${BRANCH_NAME}"
+          }
                 
+        }
+            
         }
 
         stage("Load Variables")
@@ -57,6 +76,20 @@ podTemplate(
             }
 
             load "common-variables.groovy"
+            
+            switch (BRANCH_NAME) {
+                case "master":
+                  TAG_NAME = VERSION
+                  break
+        
+                case "dev":
+                  TAG_NAME = "latest"
+                  break
+        
+                default:
+                  TAG_NAME = BRANCH_NAME
+                  break
+              }
         }
 
         stage ("Checkout Dependencies Source Code") 
