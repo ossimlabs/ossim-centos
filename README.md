@@ -33,7 +33,7 @@ cd build-image
 ./build.sh
 ```
 
-The build script will produce the building image called **ossim-builder-minimal-centos:local**
+The build script will produce the building image called **ossim-centos-builder:local**
 
 which will contain the minimal necessary dependencies to build the ossim repos.
 

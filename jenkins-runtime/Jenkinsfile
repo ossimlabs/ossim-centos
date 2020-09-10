@@ -7,14 +7,15 @@ properties([
         string(name: 'OSSIM_OMS_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim oms'),
         string(name: 'OSSIM_VIDEO_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim video'),
         string(name: 'OSSIM_DEEPCORE_BRANCH', defaultValue: 'dev', description: 'The branch to use for ossim deepcore'),
-        string(name: 'OSSIM_BUILDER_VERSION', defaultValue: '1.0.1', description: 'The version of the ossim builder to be used'),
+        string(name: 'OSSIM_QT4_BRANCH', defaultValue: 'dev', description: 'The branch to use for ImageLinker'),
+        string(name: 'OSSIM_BUILDER_VERSION', defaultValue: '1.4', description: 'The version of the ossim builder to be used'),
         booleanParam(name: 'CLEAN_WORKSPACE', defaultValue: true, description: 'Clean the workspace at the end of the run')
 
     ]),
     pipelineTriggers([
             [$class: "GitHubPushTrigger"]
     ]),
-    [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: 'https://github.com/ossimlabs/ossim-centos-minimal.git'],
+    [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: 'https://github.com/ossimlabs/ossim-centos.git'],
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '3', daysToKeepStr: '', numToKeepStr: '20')),
     disableConcurrentBuilds()
 ])
@@ -37,10 +38,11 @@ podTemplate(
       privileged: true
     ),
     containerTemplate(
-      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-builder-minimal-centos:${OSSIM_BUILDER_VERSION}",
+      image: "${DOCKER_REGISTRY_DOWNLOAD_URL}/ossim-centos-builder:${OSSIM_BUILDER_VERSION}",
       name: 'builder',
       command: 'cat',
-      ttyEnabled: true
+      ttyEnabled: true,
+      alwaysPullImage: true
     )
   ],
   volumes: [
@@ -56,7 +58,28 @@ timeout(time: 60, unit: 'MINUTES') {
 
         stage("Checkout")
         {
-            checkout(scm)
+            scmVars = checkout(scm)
+
+
+        GIT_BRANCH_NAME = scmVars.GIT_BRANCH
+        BRANCH_NAME = """${sh(returnStdout: true, script: "echo ${GIT_BRANCH_NAME} | awk -F'/' '{print \$2}'").trim()}"""
+        
+    
+        preVERSION = readFile "version.txt"
+        VERSION = preVERSION.substring(0, preVERSION.indexOf('\n'))
+
+        GIT_TAG_NAME = "omar-wms" + "-" + VERSION
+        ARTIFACT_NAME = "ArtifactName"
+
+        script {
+          if (BRANCH_NAME != 'master') {
+            buildName "${VERSION} - ${BRANCH_NAME}-SNAPSHOT"
+          } else {
+            buildName "${VERSION} - ${BRANCH_NAME}"
+          }
+                
+        }
+            
         }
 
         stage("Load Variables")
@@ -69,6 +92,20 @@ timeout(time: 60, unit: 'MINUTES') {
             }
 
             load "common-variables.groovy"
+            
+             switch (BRANCH_NAME) {
+                case "master":
+                  TAG_NAME = VERSION
+                  break
+        
+                case "dev":
+                  TAG_NAME = "latest"
+                  break
+        
+                default:
+                  TAG_NAME = BRANCH_NAME
+                  break
+              }
         }
 
         stage ("Checkout Source Code") 
@@ -92,20 +129,37 @@ timeout(time: 60, unit: 'MINUTES') {
             }
         }  
 
+
         stage ("Build Ossim")
         {
-            container('builder'){
+            container('builder')
+            {
                         sh """
                             mkdir /output
                             mv ./compile-ossim/ossim-repos/* /work
-                            mv ./compile-ossim/build-scripts/* /build-scripts
+                            mv ./compile-ossim/build-scripts /
                             cd /work
                             /build-scripts/build-ossim.sh
                             mv /output/ ${WORKSPACE}/compile-ossim/output/
                         """
-                        archiveArtifacts "compile-ossim/output/ossim-dist-minimal-centos.tgz"
+                         archiveArtifacts "compile-ossim/output/ossim-dist-minimal-centos.tgz"
             }
+         }
+
+        stage ("Publish to s3 bucket")
+        {
+            withAWS(
+                credentials: 'Jenkins IAM User',
+                region: 'us-east-1'){
+                    s3Upload(
+                        acl: 'PublicRead',
+                        bucket: 'o2-delivery',
+                        path: "deepcore/centos/ossim-dist-minimal-centos-${env.OSSIM_BUILDER_VERSION}.tgz",
+                        file: 'compile-ossim/output/ossim-dist-minimal-centos.tgz'
+                    )
+                }
         }
+
         stage ("Build Runtime Image")
         {
             container('docker'){
@@ -114,19 +168,23 @@ timeout(time: 60, unit: 'MINUTES') {
                         sh """
                             ./build-docker.sh --network=host
                         """
+
                     }
                 }
             }
         }
 
+
         stage ("Publish Docker Image")
         {
             container('docker'){
                 withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}") {
+
                     sh """
-                        docker tag ossim-runtime-minimal-centos:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
-                        docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-runtime-minimal-centos:${OSSIM_BRANCH}
+                        docker tag ossim-centos-runtime:local ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-centos-runtime:"${VERSION}"
+                        docker push ${DOCKER_REGISTRY_PRIVATE_UPLOAD_URL}/ossim-centos-runtime:"${VERSION}"
                     """
+
                 }
             }
         }
