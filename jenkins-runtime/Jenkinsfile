@@ -68,7 +68,7 @@ timeout(time: 60, unit: 'MINUTES') {
         preVERSION = readFile "version.txt"
         VERSION = preVERSION.substring(0, preVERSION.indexOf('\n'))
 
-        GIT_TAG_NAME = "omar-wms" + "-" + VERSION
+        GIT_TAG_NAME = "ossim-centos" + "-" + VERSION
         ARTIFACT_NAME = "ArtifactName"
 
         script {
