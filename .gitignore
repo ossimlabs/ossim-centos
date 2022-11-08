@@ -3,4 +3,7 @@ compile-ossim/output/
 compile-ossim/ossim-repos/
 builder-image/deps/
 ossim-dist-minimal-centos.tgz
+dev/work
+dev/dist
 .DS_Store
+*.gz
